@@ -1,5 +1,6 @@
 package com.clindevstudio.apiregistropendientes.modules.notificaciones.dtos;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import com.clindevstudio.apiregistropendientes.database.enums.NotificationEstado;

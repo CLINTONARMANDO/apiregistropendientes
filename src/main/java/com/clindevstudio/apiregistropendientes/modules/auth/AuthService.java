@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-
 @Service
 public class AuthService {
 
@@ -30,11 +29,17 @@ public class AuthService {
         Usuario usuario = usuarioRepository.findByDni(request.getDni())
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 
+        // 🚫 Verificar si el usuario está vigente
+        if (!usuario.getVigente()) {
+            throw new RuntimeException("El usuario no está activo. Contacte con el administrador.");
+        }
+
+        // 🔒 Validar contraseña
         if (!passwordEncoder.matches(request.getPassword(), usuario.getPassword())) {
             throw new RuntimeException("Contraseña incorrecta");
         }
 
-        // Generamos JWT real
+        // ✅ Generar JWT solo si pasa todas las validaciones
         String token = JwtUtil.generateToken(usuario.getId(), usuario.getRol().getNombre());
 
         return new LoginResponse(
@@ -49,7 +54,6 @@ public class AuthService {
      * ✅ Verifica si el token es válido y si el usuario está activo (vigente)
      */
     public void validarTokenYUsuarioActivo(String token) {
-        // 1️⃣ Validar token
         if (token == null || token.isEmpty()) {
             throw new RuntimeException("Token no proporcionado");
         }
@@ -58,17 +62,14 @@ public class AuthService {
             throw new RuntimeException("Token inválido o expirado");
         }
 
-        // 2️⃣ Extraer ID de usuario del token
         Long userId = jwtUtil.extractUserId(token);
         if (userId == null) {
             throw new RuntimeException("Token no contiene un ID de usuario válido");
         }
 
-        // 3️⃣ Buscar usuario
         Usuario usuario = usuarioRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 
-        // 4️⃣ Verificar si el usuario está activo (vigente)
         if (!usuario.getVigente()) {
             throw new RuntimeException("Usuario inactivo o dado de baja");
         }

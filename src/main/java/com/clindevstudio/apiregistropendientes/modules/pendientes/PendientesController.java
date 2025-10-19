@@ -48,6 +48,15 @@ public class PendientesController {
         return TransactionResponseFactory.success(actualizado, "Estado actualizado correctamente");
     }
 
+    @PutMapping("/{id}/asignar")
+    public TransactionResponse<PendienteResponse> asiganPendiente(
+            @PathVariable Long id,
+            @RequestParam Long idAsignado
+    ) {
+        PendienteResponse actualizado = pendienteService.asignarEmpleadoId(id, idAsignado);
+        return TransactionResponseFactory.success(actualizado, "Estado actualizado correctamente");
+    }
+
     @DeleteMapping("/{id}")
     public TransactionResponse<Void> eliminarPendiente(@PathVariable Long id) {
         pendienteService.eliminarPendiente(id);

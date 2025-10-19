@@ -2,15 +2,19 @@ package com.clindevstudio.apiregistropendientes.modules.pendientes;
 
 import com.clindevstudio.apiregistropendientes.database.entities.*;
 import com.clindevstudio.apiregistropendientes.database.enums.EstadoPendiente;
+import com.clindevstudio.apiregistropendientes.database.enums.NotificationTipo;
 import com.clindevstudio.apiregistropendientes.database.enums.TipoPendiente;
 import com.clindevstudio.apiregistropendientes.database.repositories.*;
 import com.clindevstudio.apiregistropendientes.database.specifications.PendienteSpecification;
+import com.clindevstudio.apiregistropendientes.modules.notificaciones.NotificacionService;
+import com.clindevstudio.apiregistropendientes.modules.notificaciones.dtos.NotificacionRequest;
 import com.clindevstudio.apiregistropendientes.modules.pendientes.dtos.*;
 import com.clindevstudio.apiregistropendientes.modules.pendientes.mappers.*;
 import com.clindevstudio.apiregistropendientes.modules.productos.dtos.PendienteItemRequest;
 import com.clindevstudio.apiregistropendientes.modules.productos.dtos.PendienteItemResponse;
 import com.clindevstudio.apiregistropendientes.modules.productos.mappers.PendienteItemMapper;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -32,6 +36,8 @@ public class PendienteService {
     private final PendienteInstalacionInternetRepository pendienteInstalacionInternetRepository;
     private final PendienteAveriaRepsitory pendienteAveriaRepsitory;
     private final PendienteRecojoDispositivoRepository pendienteRecojoDispositivoRepository;
+    private final UsuarioRepository usuarioRepository;
+    private final NotificacionService notificacionService;
 
 
     // ✅ Constructor injection (sin @Autowired en campos)
@@ -44,7 +50,9 @@ public class PendienteService {
             PendienteInstalacionCamarasRepository pendienteInstalacionCamarasRepository,
             PendienteInstalacionInternetRepository pendienteInstalacionInternetRepository,
             PendienteAveriaRepsitory pendienteAveriaRepsitory,
-            PendienteRecojoDispositivoRepository pendienteRecojoDispositivoRepository
+            PendienteRecojoDispositivoRepository pendienteRecojoDispositivoRepository,
+            UsuarioRepository usuarioRepository,
+            NotificacionService notificacionService
     ) {
         this.pendienteRepository = pendienteRepository;
         this.clienteRepository = clienteRepository;
@@ -55,6 +63,8 @@ public class PendienteService {
         this.pendienteInstalacionInternetRepository = pendienteInstalacionInternetRepository;
         this.pendienteAveriaRepsitory = pendienteAveriaRepsitory;
         this.pendienteRecojoDispositivoRepository = pendienteRecojoDispositivoRepository;
+        this.usuarioRepository = usuarioRepository;
+        this.notificacionService = notificacionService;
     }
 
     public Page<PendienteResponse> filtrarPendientes(FiltroPendienteRequest filtro, Pageable pageable) {
@@ -72,13 +82,71 @@ public class PendienteService {
         return filtros;
     }
 
+    @Transactional
     public PendienteResponse cambiarEstado(Long pendienteId, EstadoPendiente nuevoEstado) {
         Pendiente pendiente = pendienteRepository.findById(pendienteId)
                 .orElseThrow(() -> new EntityNotFoundException("Pendiente no encontrado con id: " + pendienteId));
 
         pendiente.setEstado(nuevoEstado);
-        return PendienteMapper.toResponse(pendienteRepository.save(pendiente));
+        Pendiente actualizado = pendienteRepository.save(pendiente);
+
+        // 🔹 Crear notificación base
+        NotificacionRequest notificacionBase = new NotificacionRequest();
+        notificacionBase.setTitulo("Cambio de estado de pendiente");
+        notificacionBase.setMensaje("El pendiente '" + pendiente.getTitulo() + "' ha cambiado su estado a " + nuevoEstado.name());
+        notificacionBase.setTipo(NotificationTipo.INFO);
+
+        // 🔹 Enviar notificaciones según el estado
+        switch (nuevoEstado) {
+            case REGISTRADO -> {
+                notificacionService.enviarNotificacionARol("ADMN", notificacionBase);
+                notificacionService.enviarNotificacionARol("CORD", notificacionBase);
+            }
+            case SIN_PPOE -> {
+                notificacionService.enviarNotificacionARol("ATAC", notificacionBase);
+            }
+            case POR_VALIDAR -> {
+                notificacionService.enviarNotificacionARol("CONT", notificacionBase);
+            }
+            default -> {
+                // No se notifica para otros estados
+            }
+        }
+
+        return PendienteMapper.toResponse(actualizado);
     }
+
+
+    @Transactional
+    public PendienteResponse asignarEmpleadoId(Long pendienteId, Long idEmpleado) {
+        Pendiente pendiente = pendienteRepository.findById(pendienteId)
+                .orElseThrow(() -> new RuntimeException("Pendiente no encontrado con id: " + pendienteId));
+
+        Empleado empleado = empleadoRepository.findById(idEmpleado)
+                .orElseThrow(() -> new RuntimeException("Empleado no encontrado con id: " + idEmpleado));
+
+        pendiente.setAsignadoA(empleado);
+        Pendiente actualizado = pendienteRepository.save(pendiente);
+
+        // 🔹 Buscar el usuario asociado a este empleado
+        Usuario usuario = usuarioRepository.findByEmpleadoIdAndVigenteTrue(idEmpleado)
+                .orElse(null);
+
+        if (usuario != null) {
+            // 🔹 Crear y enviar notificación al usuario del empleado
+            NotificacionRequest notificacion = new NotificacionRequest();
+            notificacion.setTitulo("Nuevo pendiente asignado");
+            notificacion.setMensaje("Se te ha asignado el pendiente: " + pendiente.getTitulo());
+            notificacion.setUsuarioId(usuario.getId());
+            notificacion.setTipo(NotificationTipo.INFO);
+
+            notificacionService.crearNotificacion(notificacion);
+        }
+
+        return PendienteMapper.toResponse(actualizado);
+    }
+
+
 
     public PendienteResponse crearPendiente(CrearPendienteRequest crearPendienteRequest) {
         // Puedes inicializar valores por defecto aquí

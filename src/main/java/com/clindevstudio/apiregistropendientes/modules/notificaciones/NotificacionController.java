@@ -1,10 +1,13 @@
 package com.clindevstudio.apiregistropendientes.modules.notificaciones;
 
+import com.clindevstudio.apiregistropendientes.database.enums.NotificationEstado;
+import com.clindevstudio.apiregistropendientes.database.enums.NotificationTipo;
 import com.clindevstudio.apiregistropendientes.modules.common.TransactionResponse;
 import com.clindevstudio.apiregistropendientes.modules.common.TransactionResponseFactory;
 import com.clindevstudio.apiregistropendientes.modules.notificaciones.dtos.NotificacionRequest;
 import com.clindevstudio.apiregistropendientes.modules.notificaciones.dtos.NotificacionResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -30,11 +33,19 @@ public class NotificacionController {
         return TransactionResponseFactory.success(notificaciones, "Notificaciones obtenidas correctamente");
     }
 
-    // 🔹 Listar por usuario
     @GetMapping("/usuario/{usuarioId}")
-    public TransactionResponse<List<NotificacionResponse>> listarPorUsuario(@PathVariable Long usuarioId) {
-        List<NotificacionResponse> notificaciones = notificacionService.listarPorUsuario(usuarioId);
-        return TransactionResponseFactory.success(notificaciones, "Notificaciones del usuario obtenidas correctamente");
+    public TransactionResponse<Page<NotificacionResponse>> listarPorUsuario(
+            @PathVariable Long usuarioId,
+            @RequestParam(required = false) NotificationEstado leida,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ) {
+        Page<NotificacionResponse> result = notificacionService.listarPorUsuario(usuarioId, leida, page, size);
+
+        return TransactionResponseFactory.success(
+                result,
+                "Notificaciones obtenidas correctamente"
+        );
     }
 
     // 🔹 Actualizar

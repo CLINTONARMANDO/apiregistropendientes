@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -23,7 +24,7 @@ public class Pago extends BaseEntity {
     private BigDecimal monto;
 
     @Column(name = "fecha_pago")
-    private LocalDateTime fechaPago;
+    private LocalDate fechaPago;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "metodo_pago", length = 50)

@@ -2,8 +2,7 @@ package com.clindevstudio.apiregistropendientes.database.entities;
 
 import com.clindevstudio.apiregistropendientes.database.base.BaseEntity;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -12,11 +11,13 @@ import java.util.Set;
 @Getter
 @Setter
 @Table(name = "roles")
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Rol extends BaseEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
 
     @Column(length = 100, nullable = false, unique = true)
     private String nombre;

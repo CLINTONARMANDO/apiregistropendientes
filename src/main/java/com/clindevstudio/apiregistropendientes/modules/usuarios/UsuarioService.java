@@ -133,17 +133,18 @@ public class UsuarioService {
     }
 
     // ✅ Actualizar rol
-    public RolResponse updateRol(Long id, RolRequest rolRequest) {
+    public RolResponse updateRol(String id, RolRequest rolRequest) {
         Rol rol = rolRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Rol no encontrado"));
 
+        rol.setId(rolRequest.getId());
         rol.setNombre(rolRequest.getNombre());
         rol.setDescripcion(rolRequest.getDescripcion());
 
         return RolMapper.toResponse(rolRepository.save(rol));
     }
 
-    public void deleteRol(Long id) {
+    public void deleteRol(String id) {
         Rol rol = rolRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Rol no encontrado"));
 
@@ -192,7 +193,7 @@ public class UsuarioService {
                 .collect(Collectors.toList());
     }
 
-    public List<ModuloResponse> getModulosByRol(Long rolId) {
+    public List<ModuloResponse> getModulosByRol(String rolId) {
         Rol rol = rolRepository.findById(rolId)
                 .orElseThrow(() -> new EntityNotFoundException("Rol no encontrado"));
 

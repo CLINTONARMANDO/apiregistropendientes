@@ -5,6 +5,6 @@ import java.util.List;
 
 @Data
 public class ModuloRolSyncRequest {
-    private Long rolId;
+    private String rolId;
     private List<Long> moduloIds;
 }

@@ -9,6 +9,6 @@ public class UsuarioRequest {
     private String email;
     private String password;
     private Boolean activo;
-    private Long idRol;
+    private String idRol;
     private Long empleadoId;
 }

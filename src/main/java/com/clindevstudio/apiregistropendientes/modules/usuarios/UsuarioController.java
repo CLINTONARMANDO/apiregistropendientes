@@ -94,7 +94,7 @@ public class UsuarioController {
     // ✅ Actualizar rol
     @PutMapping("/roles/{id}")
     public TransactionResponse<RolResponse> actualizarRol(
-            @PathVariable Long id,
+            @PathVariable String id,
             @RequestBody RolRequest rolRequest
     ) {
         RolResponse rolActualizado = usuarioService.updateRol(id, rolRequest);
@@ -103,14 +103,14 @@ public class UsuarioController {
 
     // ✅ Eliminar rol
     @DeleteMapping("/roles/{id}")
-    public TransactionResponse<Void> eliminarRol(@PathVariable Long id) {
+    public TransactionResponse<Void> eliminarRol(@PathVariable String id) {
         usuarioService.deleteRol(id);
         return TransactionResponseFactory.success(null, "Rol eliminado correctamente");
     }
 
     @GetMapping("/modulos/rol/{id}")
     public TransactionResponse<List<ModuloResponse>> obtenerModulosDelUsuario(
-            @PathVariable Long id
+            @PathVariable String id
     ) {
         List<ModuloResponse> modulos = usuarioService.getModulosByRol(id);
         return TransactionResponseFactory.success(

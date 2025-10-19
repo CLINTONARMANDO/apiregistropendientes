@@ -27,7 +27,7 @@ public class PendienteSeeder {
 
     @PostConstruct
     public void seedPendientes() {
-        if (pendienteRepository.count() > 0) {
+        if (pendienteRepository.count() != 0) {
             System.out.println("⚠️ Pendientes ya existen, se omite seeding.");
             return;
         }

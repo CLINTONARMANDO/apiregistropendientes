@@ -13,7 +13,7 @@ public class RolMapper {
         return rolResponse;
     }
     public static Rol toEntity(RolRequest rolRequest) {
-        Rol rol = new Rol();
+        Rol rol = new Rol(null, "Asesor", "Acceso al historial de pendientes atendidos", null);
         rol.setNombre(rolRequest.getNombre());
         rol.setDescripcion(rolRequest.getDescripcion());
         return rol;

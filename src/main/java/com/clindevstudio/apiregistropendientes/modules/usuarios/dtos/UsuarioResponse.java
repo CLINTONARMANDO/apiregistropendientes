@@ -17,10 +17,10 @@ public class UsuarioResponse {
 
     @Data
     public static class RolData {
-        private Long id;
+        private String id;
         private String nombre;
 
-        public RolData(Long id, String nombre) {
+        public RolData(String id, String nombre) {
             this.id = id;
             this.nombre = nombre;
         }

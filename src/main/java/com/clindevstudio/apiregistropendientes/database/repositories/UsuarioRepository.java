@@ -1,5 +1,6 @@
 package com.clindevstudio.apiregistropendientes.database.repositories;
 
+import com.clindevstudio.apiregistropendientes.database.entities.Rol;
 import com.clindevstudio.apiregistropendientes.database.entities.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -14,5 +15,9 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
     boolean existsByEmail(String email);
     public List<Usuario> findAllByVigente(Boolean vigente);
 
-    boolean existsByRolId(Long id);
+    boolean existsByRolId(String id);
+
+    List<Usuario> findByRol(Rol rol);
+    Optional<Usuario> findByEmpleadoIdAndVigenteTrue(Long empleadoId);
+    List<Usuario> findByRol_NombreAndVigenteTrue(String rolNombre);
 }

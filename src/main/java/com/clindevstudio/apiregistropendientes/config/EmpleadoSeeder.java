@@ -20,6 +20,18 @@ public class EmpleadoSeeder {
         return args -> {
 
             if (empleadoRepository.count() == 0) {
+                // 🧠 Empleado del sistema
+                empleadoRepository.save(new Empleado(
+                        null,
+                        "Sistema",
+                        "SIMAX",
+                        "Automático",
+                        "000000000",
+                        "sistema@simax.com",
+                        cargoRepository.findById(1L).orElseThrow(),
+                        LocalDate.now()
+                ));
+
             empleadoRepository.save(new Empleado(null, "Joel David", "Nina", "Calle", "951936726","ninacallijoeldavid@gmail.com", cargoRepository.findById(3L).orElseThrow(),LocalDate.now()));
             empleadoRepository.save(new Empleado(null, "Natalia", "Quispe", "Quispe", "974642136","natalymeyly@gmail.com", cargoRepository.findById(3L).orElseThrow(),LocalDate.now()));
 

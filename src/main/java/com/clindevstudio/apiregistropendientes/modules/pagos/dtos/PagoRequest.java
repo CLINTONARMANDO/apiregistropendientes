@@ -10,7 +10,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Data
 @NoArgsConstructor
@@ -21,7 +21,7 @@ public class PagoRequest {
     private Long clienteId;          // ID del cliente asociado
     private Long pendienteId;        // ID del pendiente asociado
     private BigDecimal monto;        // Monto del pago
-    private LocalDateTime fechaPago; // Fecha del pago
-    private MetodoPago metodoPago;   // Enum con el método de pago
+    private LocalDate fechaPago; // Fecha del pago
+    private MetodoPago metodoPago;   // Enum con el métdo de pago
     private String referencia;       // Código o descripción de referencia
 }
