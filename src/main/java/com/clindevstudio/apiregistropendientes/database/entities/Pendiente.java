@@ -27,6 +27,7 @@ public class Pendiente extends BaseEntity{
 
     @Column(length = 150, nullable = false)
     private String titulo;
+    //volar
 
     @Column(columnDefinition = "TEXT")
     private String descripcion;
