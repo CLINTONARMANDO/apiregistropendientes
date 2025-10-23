@@ -25,13 +25,6 @@ public class Pendiente extends BaseEntity{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(length = 150, nullable = false)
-    private String titulo;
-    //volar
-
-    @Column(columnDefinition = "TEXT")
-    private String descripcion;
-
     @Column(name = "fecha_creacion", nullable = false, updatable = false)
     private LocalDateTime fechaCreacion = LocalDateTime.now();
 

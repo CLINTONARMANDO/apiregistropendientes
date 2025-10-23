@@ -43,8 +43,6 @@ public class PendienteSeeder {
         for (EstadoPendiente estado : EstadoPendiente.values()) {
             for (int i = 1; i <= 2; i++) {
                 Pendiente p = Pendiente.builder()
-                        .titulo("Pendiente " + estado.name() + " #" + i)
-                        .descripcion("Descripción de prueba para estado " + estado.name())
                         .fechaCreacion(LocalDateTime.now().minusDays(i))
                         .registradoPor(asesor)
                         .asignadoA(tecnico)

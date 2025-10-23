@@ -9,8 +9,6 @@ import com.clindevstudio.apiregistropendientes.database.enums.PrioridadPendiente
 
 @Data
 public class CrearPendienteRequest {
-    private String titulo;
-    private String descripcion;
     private Long registradoPorId;
     private Long asignadoAId;
     private LocalDateTime fechaPendiente;

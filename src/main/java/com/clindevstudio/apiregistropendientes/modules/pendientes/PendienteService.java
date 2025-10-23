@@ -93,7 +93,7 @@ public class PendienteService {
         // 🔹 Crear notificación base
         NotificacionRequest notificacionBase = new NotificacionRequest();
         notificacionBase.setTitulo("Cambio de estado de pendiente");
-        notificacionBase.setMensaje("El pendiente '" + pendiente.getTitulo() + "' ha cambiado su estado a " + nuevoEstado.name());
+        notificacionBase.setMensaje("El pendiente '" + pendiente.getId() + "' ha cambiado su estado a " + nuevoEstado.name());
         notificacionBase.setTipo(NotificationTipo.INFO);
 
         // 🔹 Enviar notificaciones según el estado
@@ -136,7 +136,7 @@ public class PendienteService {
             // 🔹 Crear y enviar notificación al usuario del empleado
             NotificacionRequest notificacion = new NotificacionRequest();
             notificacion.setTitulo("Nuevo pendiente asignado");
-            notificacion.setMensaje("Se te ha asignado el pendiente: " + pendiente.getTitulo());
+            notificacion.setMensaje("Se te ha asignado el pendiente: " + pendiente.getId());
             notificacion.setUsuarioId(usuario.getId());
             notificacion.setTipo(NotificationTipo.INFO);
 

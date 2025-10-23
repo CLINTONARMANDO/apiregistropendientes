@@ -10,8 +10,6 @@ public class PendienteMapper {
 
     public static Pendiente toEntity(CrearPendienteRequest crearPendienteRequest, Cliente cliente, Empleado empleadoRegistro, Empleado empleadoAsignacion) {
         Pendiente pendiente = new Pendiente();
-        pendiente.setTitulo(crearPendienteRequest.getTitulo());
-        pendiente.setDescripcion(crearPendienteRequest.getDescripcion());
         pendiente.setFechaPendiente(crearPendienteRequest.getFechaPendiente());
         pendiente.setEstado(crearPendienteRequest.getEstado());
         pendiente.setTipo(crearPendienteRequest.getTipo());
@@ -29,8 +27,6 @@ public class PendienteMapper {
 
     public static Pendiente toEntity(CrearPendienteRequest crearPendienteRequest, Cliente cliente, Empleado empleadoRegistro) {
         Pendiente pendiente = new Pendiente();
-        pendiente.setTitulo(crearPendienteRequest.getTitulo());
-        pendiente.setDescripcion(crearPendienteRequest.getDescripcion());
         pendiente.setFechaPendiente(crearPendienteRequest.getFechaPendiente());
         pendiente.setEstado(crearPendienteRequest.getEstado());
         pendiente.setTipo(crearPendienteRequest.getTipo());
@@ -49,8 +45,6 @@ public class PendienteMapper {
     public static PendienteResponse toResponse(Pendiente pendiente) {
         PendienteResponse response = new PendienteResponse();
         response.setId(pendiente.getId());
-        response.setTitulo(pendiente.getTitulo());
-        response.setDescripcion(pendiente.getDescripcion());
         response.setFechaCreacion(pendiente.getFechaCreacion());
         response.setFechaPendiente(pendiente.getFechaPendiente());
         response.setEstado(pendiente.getEstado());
