@@ -18,6 +18,10 @@ public class Pago extends BaseEntity {
     private Long id;
 
     @ManyToOne
+    @JoinColumn(name = "empleado_id")
+    private Empleado empleado;
+
+    @ManyToOne
     @JoinColumn(name = "cliente_id")
     private Cliente cliente;
 

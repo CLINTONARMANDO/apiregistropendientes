@@ -7,9 +7,18 @@ import com.clindevstudio.apiregistropendientes.modules.notas.mappers.PendienteNo
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -19,6 +28,7 @@ public class NotaService {
     private final PendienteNotaImagenRepository pendienteNotaImagenRepository;
     private final PendienteRepository pendienteRepository;
     private final EmpleadoRepository empleadoRepository;
+    private final Path rootLocation = Paths.get("uploads/notas");
 
     public NotaService(
             PendienteNotaRepository pendienteNotaRepository,
@@ -30,6 +40,51 @@ public class NotaService {
         this.pendienteNotaImagenRepository = pendienteNotaImagenRepository;
         this.pendienteRepository = pendienteRepository;
         this.empleadoRepository = empleadoRepository;
+    }
+
+    @Transactional
+    public List<PendienteNotaImagenResponse> subirImagenes(Long notaId, List<MultipartFile> files) {
+        PendienteNota nota = pendienteNotaRepository.findById(notaId)
+                .orElseThrow(() -> new EntityNotFoundException("Nota no encontrada con id: " + notaId));
+
+        // Asegurar que el directorio exista
+        try {
+            Files.createDirectories(rootLocation);
+        } catch (IOException e) {
+            throw new RuntimeException("No se pudo crear el directorio de subida", e);
+        }
+
+        List<PendienteNotaImagen> guardadas = new ArrayList<>();
+
+        for (MultipartFile file : files) {
+            if (file.isEmpty()) continue;
+
+            String filename = UUID.randomUUID() + "_" + StringUtils.cleanPath(file.getOriginalFilename());
+            Path destino = rootLocation.resolve(filename);
+
+            try {
+                Files.copy(file.getInputStream(), destino, StandardCopyOption.REPLACE_EXISTING);
+            } catch (IOException e) {
+                throw new RuntimeException("Error guardando archivo: " + filename, e);
+            }
+
+            String url = "/uploads/notas/" + filename; // o una URL absoluta si tienes hosting
+
+            PendienteNotaImagen imagen = PendienteNotaImagen.builder()
+                    .nota(nota)
+                    .url(url)
+                    .build();
+
+            guardadas.add(pendienteNotaImagenRepository.save(imagen));
+        }
+
+        return guardadas.stream()
+                .map(img -> PendienteNotaImagenResponse.builder()
+                        .id(img.getId())
+                        .notaId(notaId)
+                        .url(img.getUrl())
+                        .build())
+                .toList();
     }
 
     // 🔹 Crear una nueva nota

@@ -4,6 +4,7 @@ import com.clindevstudio.apiregistropendientes.modules.common.TransactionRespons
 import com.clindevstudio.apiregistropendientes.modules.common.TransactionResponseFactory;
 import com.clindevstudio.apiregistropendientes.modules.notas.dtos.*;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -15,6 +16,17 @@ public class NotaController {
 
     public NotaController(NotaService notaService) {
         this.notaService = notaService;
+    }
+
+
+    // 🔹 Subir imágenes para una nota
+    @PostMapping("/{notaId}/imagenes/upload")
+    public TransactionResponse<List<PendienteNotaImagenResponse>> subirImagenes(
+            @PathVariable Long notaId,
+            @RequestParam("files") List<MultipartFile> files
+    ) {
+        List<PendienteNotaImagenResponse> response = notaService.subirImagenes(notaId, files);
+        return TransactionResponseFactory.success(response, "Imágenes subidas correctamente");
     }
 
     // 🔹 Crear nueva nota
