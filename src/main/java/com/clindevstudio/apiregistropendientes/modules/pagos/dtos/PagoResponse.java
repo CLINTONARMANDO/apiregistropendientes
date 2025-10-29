@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
@@ -17,8 +16,11 @@ import java.time.LocalDateTime;
 public class PagoResponse {
 
     private Long id;
-    private String clienteNombre;     // Nombre del cliente (opcional, más legible)
-    private String pendienteId;   // Título o descripción del pendiente
+    private Long empleadoId;         // ID del empleado que registra el pago
+    private Long clienteId;          // ID del cliente asociado
+    private String empleadoNombre;   // Nombre del empleado que registró el pago
+    private String clienteNombre;    // Nombre del cliente
+    private Long pendienteId;        // ID del pendiente
     private BigDecimal monto;
     private LocalDate fechaPago;
     private MetodoPago metodoPago;
