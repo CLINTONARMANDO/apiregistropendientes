@@ -58,9 +58,14 @@ public class NotaService {
         List<PendienteNotaImagen> guardadas = new ArrayList<>();
 
         for (MultipartFile file : files) {
-            if (file.isEmpty()) continue;
+            if (file.isEmpty() || file.getSize() == 0) continue;
 
-            String filename = UUID.randomUUID() + "_" + StringUtils.cleanPath(file.getOriginalFilename());
+            String originalName = file.getOriginalFilename();
+            if (originalName == null || originalName.isBlank()) {
+                originalName = "imagen_" + UUID.randomUUID() + ".jpg";
+            }
+
+            String filename = UUID.randomUUID() + "_" + StringUtils.cleanPath(originalName);
             Path destino = rootLocation.resolve(filename);
 
             try {
@@ -69,7 +74,7 @@ public class NotaService {
                 throw new RuntimeException("Error guardando archivo: " + filename, e);
             }
 
-            String url = "/uploads/notas/" + filename; // o una URL absoluta si tienes hosting
+            String url = "/uploads/notas/" + filename;
 
             PendienteNotaImagen imagen = PendienteNotaImagen.builder()
                     .nota(nota)
