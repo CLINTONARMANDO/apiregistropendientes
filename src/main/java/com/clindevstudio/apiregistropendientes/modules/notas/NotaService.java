@@ -3,6 +3,7 @@ package com.clindevstudio.apiregistropendientes.modules.notas;
 import com.clindevstudio.apiregistropendientes.database.entities.*;
 import com.clindevstudio.apiregistropendientes.database.repositories.*;
 import com.clindevstudio.apiregistropendientes.modules.notas.dtos.*;
+import com.clindevstudio.apiregistropendientes.modules.notas.mappers.PendienteNotaImagenMapper;
 import com.clindevstudio.apiregistropendientes.modules.notas.mappers.PendienteNotaMapper;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
@@ -87,20 +88,41 @@ public class NotaService {
                 .toList();
     }
 
-    // 🔹 Crear una nueva nota
+    // 🔹 Crear una nueva nota junto con imágenes
     @Transactional
     public PendienteNotaResponse crearNota(PendienteNotaRequest request) {
+        // 1️⃣ Validar pendiente
         Pendiente pendiente = pendienteRepository.findById(request.getPendienteId())
                 .orElseThrow(() -> new EntityNotFoundException("Pendiente no encontrado con id: " + request.getPendienteId()));
 
+        // 2️⃣ Validar empleado
         Empleado empleado = empleadoRepository.findById(request.getEmpleadoId())
                 .orElseThrow(() -> new EntityNotFoundException("Empleado no encontrado con id: " + request.getEmpleadoId()));
 
+        // 3️⃣ Crear nota
         PendienteNota nota = PendienteNotaMapper.toEntity(request, pendiente, empleado);
         PendienteNota guardado = pendienteNotaRepository.save(nota);
 
-        return PendienteNotaMapper.toResponse(guardado);
+        // 4️⃣ Guardar imágenes si existen
+        if (request.getImagenes() != null && !request.getImagenes().isEmpty()) {
+            List<PendienteNotaImagen> imagenes = request.getImagenes().stream()
+                    .map(imgReq -> PendienteNotaImagen.builder()
+                            .nota(guardado)
+                            .url(imgReq.getUrl()) // Asegúrate de que aquí venga la URL o la ruta del archivo
+                            .build())
+                    .toList();
+            pendienteNotaImagenRepository.saveAll(imagenes);
+        }
+
+        // 5️⃣ Devolver nota con las imágenes guardadas
+        PendienteNotaResponse response = PendienteNotaMapper.toResponse(guardado);
+        if (request.getImagenes() != null && !request.getImagenes().isEmpty()) {
+            response.setImagenes(obtenerImagenesPorNota(guardado.getId()));
+        }
+
+        return response;
     }
+
 
     // 🔹 Actualizar una nota existente
     @Transactional
@@ -139,6 +161,14 @@ public class NotaService {
                 .orElseThrow(() -> new EntityNotFoundException("Nota no encontrada con id: " + id));
         nota.setVigente(false);
         pendienteNotaRepository.save(nota);
+    }
+
+
+    public List<PendienteNotaImagenResponse> obtenerImagenesPorNota(Long notaId) {
+        return pendienteNotaImagenRepository.findByNotaId(notaId)
+                .stream()
+                .map(PendienteNotaImagenMapper::toResponse)
+                .collect(Collectors.toList());
     }
 
     // 🔹 Actualizar imágenes asociadas a una nota

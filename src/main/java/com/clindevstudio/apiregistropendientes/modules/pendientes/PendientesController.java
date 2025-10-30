@@ -24,13 +24,10 @@ public class PendientesController {
     // 🔹 CRUD GENERAL DE PENDIENTES
     // ==========================================================
 
-    @PostMapping("/filtrar")
-    public TransactionResponse<Page<PendienteResponse>> filtrarPendientes(
-            @RequestBody FiltroPendienteRequest filtro,
-            Pageable pageable
-    ) {
-        Page<PendienteResponse> pendientes = pendienteService.filtrarPendientes(filtro, pageable);
-        return TransactionResponseFactory.success(pendientes, "Pendientes filtrados correctamente");
+    // 🔹 Obtener pendiente por ID
+    @GetMapping("/{id}")
+    public PendienteResponse obtenerPorId(@PathVariable Long id) {
+        return pendienteService.obtenerPorId(id);
     }
 
     @PostMapping

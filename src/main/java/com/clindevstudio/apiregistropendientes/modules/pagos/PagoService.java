@@ -1,12 +1,10 @@
 package com.clindevstudio.apiregistropendientes.modules.pagos;
 
 import com.clindevstudio.apiregistropendientes.database.entities.Cliente;
+import com.clindevstudio.apiregistropendientes.database.entities.Empleado;
 import com.clindevstudio.apiregistropendientes.database.entities.Pago;
 import com.clindevstudio.apiregistropendientes.database.entities.Pendiente;
-import com.clindevstudio.apiregistropendientes.database.repositories.CargoRepository;
-import com.clindevstudio.apiregistropendientes.database.repositories.ClienteRepository;
-import com.clindevstudio.apiregistropendientes.database.repositories.PagoRepository;
-import com.clindevstudio.apiregistropendientes.database.repositories.PendienteRepository;
+import com.clindevstudio.apiregistropendientes.database.repositories.*;
 import com.clindevstudio.apiregistropendientes.modules.pagos.dtos.PagoRequest;
 import com.clindevstudio.apiregistropendientes.modules.pagos.dtos.PagoResponse;
 import com.clindevstudio.apiregistropendientes.modules.pagos.mappers.PagoMapper;
@@ -23,11 +21,13 @@ public class PagoService {
     private final PagoRepository pagoRepository;
     private final ClienteRepository clienteRepository;
     private final PendienteRepository pendienteRepository;
+    private final EmpleadoRepository empleadoRepository;
 
-    public PagoService(PagoRepository pagoRepository, ClienteRepository clienteRepository, PendienteRepository pendienteRepository) {
+    public PagoService(PagoRepository pagoRepository, ClienteRepository clienteRepository, PendienteRepository pendienteRepository,  EmpleadoRepository empleadoRepository) {
         this.pagoRepository = pagoRepository;
         this.clienteRepository = clienteRepository;
         this.pendienteRepository = pendienteRepository;
+        this.empleadoRepository = empleadoRepository;
     }
 
     /**
@@ -48,8 +48,9 @@ public class PagoService {
                 .orElseThrow(() -> new RuntimeException("Cliente no encontrado"));
         Pendiente pendiente = pendienteRepository.findById(request.getPendienteId())
                 .orElseThrow(() -> new RuntimeException("Pendiente no encontrado"));
-
-        Pago pago = PagoMapper.toEntity(request, cliente, pendiente);
+        Empleado empleado = empleadoRepository.findById(request.getEmpleadoId())
+                .orElseThrow(() -> new RuntimeException("Empleado no encontrado"));
+        Pago pago = PagoMapper.toEntity(request, empleado, cliente, pendiente);
         pago.setVigente(true);
 
         return PagoMapper.toResponse(pagoRepository.save(pago));
@@ -62,13 +63,14 @@ public class PagoService {
     public PagoResponse actualizarPago(Long id, PagoRequest request) {
         Pago pago = pagoRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Pago no encontrado"));
-
         Cliente cliente = clienteRepository.findById(request.getClienteId())
                 .orElseThrow(() -> new RuntimeException("Cliente no encontrado"));
         Pendiente pendiente = pendienteRepository.findById(request.getPendienteId())
                 .orElseThrow(() -> new RuntimeException("Pendiente no encontrado"));
+        Empleado empleado = empleadoRepository.findById(request.getEmpleadoId())
+                .orElseThrow(() -> new RuntimeException("Empleado no encontrado"));
 
-        PagoMapper.updateEntity(pago, request, cliente, pendiente);
+        PagoMapper.updateEntity(pago, request, empleado, cliente, pendiente);
         return PagoMapper.toResponse(pagoRepository.save(pago));
     }
 

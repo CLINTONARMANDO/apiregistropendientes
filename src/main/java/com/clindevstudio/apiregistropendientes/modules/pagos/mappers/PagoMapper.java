@@ -42,11 +42,6 @@ public class PagoMapper {
                 .build();
     }
 
-    // 🔹 Sobrecarga cuando no se pasa el empleado (por compatibilidad)
-    public static Pago toEntity(PagoRequest request, Cliente cliente, Pendiente pendiente) {
-        return toEntity(request, null, cliente, pendiente);
-    }
-
     // 🔹 Actualiza una entidad existente con nuevos datos del request
     public static void updateEntity(Pago pago, PagoRequest request, Empleado empleado, Cliente cliente, Pendiente pendiente) {
         if (pago == null || request == null) return;

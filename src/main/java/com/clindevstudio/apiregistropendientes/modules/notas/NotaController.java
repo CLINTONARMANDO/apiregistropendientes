@@ -18,6 +18,13 @@ public class NotaController {
         this.notaService = notaService;
     }
 
+    @GetMapping("/{notaId}/imagenes")
+    public TransactionResponse<List<PendienteNotaImagenResponse>> obtenerImagenesPorNota(
+            @PathVariable Long notaId
+    ) {
+        List<PendienteNotaImagenResponse> response = notaService.obtenerImagenesPorNota(notaId);
+        return TransactionResponseFactory.success(response, "Imágenes obtenidas correctamente");
+    }
 
     // 🔹 Subir imágenes para una nota
     @PostMapping("/{notaId}/imagenes/upload")

@@ -74,6 +74,12 @@ public class PendienteService {
                 .map(PendienteMapper::toResponse);
     }
 
+    public PendienteResponse obtenerPorId(Long id) {
+        Pendiente pendiente = pendienteRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Pendiente no encontrado"));
+        return PendienteMapper.toResponse(pendiente);
+    }
+
     // --- Función para devolver todos los enums disponibles ---
     public Map<String, Object> obtenerFiltrosDisponibles() {
         Map<String, Object> filtros = new HashMap<>();
