@@ -5,7 +5,9 @@ import com.clindevstudio.apiregistropendientes.modules.common.TransactionRespons
 import com.clindevstudio.apiregistropendientes.modules.common.TransactionResponseFactory;
 import com.clindevstudio.apiregistropendientes.modules.pendientes.dtos.*;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -29,6 +31,29 @@ public class PendientesController {
     public PendienteResponse obtenerPorId(@PathVariable Long id) {
         return pendienteService.obtenerPorId(id);
     }
+    @PostMapping("/filtrar")
+    public TransactionResponse<Page<PendienteResponse>> filtrarPendientes(
+            @RequestBody FiltroPendienteRequest filtro,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "fechaCreacion,desc") String sort
+    ) {
+        // Separar campo y dirección
+        String[] sortParams = sort.split(",");
+        String sortField = sortParams[0];
+        Sort.Direction sortDirection = (sortParams.length > 1 && sortParams[1].equalsIgnoreCase("asc"))
+                ? Sort.Direction.ASC
+                : Sort.Direction.DESC;
+
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sortDirection, sortField));
+
+        // Obtener la página de pendientes directamente
+        Page<PendienteResponse> result = pendienteService.filtrarPendientes(filtro, pageable);
+
+        // Retornar la respuesta dentro del TransactionResponse
+        return TransactionResponseFactory.success(result, "Pendientes filtrados correctamente");
+    }
+
 
     @PostMapping
     public TransactionResponse<PendienteResponse> crearPendiente(@RequestBody CrearPendienteRequest request) {
@@ -60,7 +85,7 @@ public class PendientesController {
         return TransactionResponseFactory.success(null, "Pendiente eliminado correctamente");
     }
 
-    @GetMapping("/filtros")
+    @PostMapping("/filtros")
     public TransactionResponse<Object> obtenerFiltrosDisponibles() {
         return TransactionResponseFactory.success(
                 pendienteService.obtenerFiltrosDisponibles(),
