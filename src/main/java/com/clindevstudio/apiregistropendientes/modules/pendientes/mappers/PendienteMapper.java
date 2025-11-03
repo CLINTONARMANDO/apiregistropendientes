@@ -53,9 +53,18 @@ public class PendienteMapper {
         response.setPrioridad(pendiente.getPrioridad());
         response.setDireccion(pendiente.getDireccion());
         response.setCliente(pendiente.getCliente() != null ? pendiente.getCliente().getNombre() : null);
+        response.setIdCliente(pendiente.getCliente().getId());
 
         response.setRegistradoPor(pendiente.getRegistradoPor() != null
                 ? pendiente.getRegistradoPor().getNombre() + " " + pendiente.getRegistradoPor().getApellidoPaterno()
+                : null);
+
+        response.setIdEmpleadoRegistro(pendiente.getRegistradoPor() != null
+                ? pendiente.getRegistradoPor().getId()
+                : null);
+
+        response.setIdEmpleadoAsignado(pendiente.getAsignadoA() != null
+                ? pendiente.getAsignadoA().getId()
                 : null);
 
         response.setAsignadoA(pendiente.getAsignadoA() != null
