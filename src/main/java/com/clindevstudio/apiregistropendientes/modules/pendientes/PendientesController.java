@@ -70,6 +70,16 @@ public class PendientesController {
         return TransactionResponseFactory.success(actualizado, "Estado actualizado correctamente");
     }
 
+
+    @PutMapping("/{id}/postergar")
+    public TransactionResponse<PendienteResponse> postergarPendiente(
+            @PathVariable Long id,
+            @RequestBody PostergarPendienteRequest request) {
+
+        PendienteResponse response = pendienteService.postergarPendiente(id, request);
+        return TransactionResponseFactory.success(response, "Pendiente postergado correctamente");
+    }
+
     @PutMapping("/{id}/asignar")
     public TransactionResponse<PendienteResponse> asiganPendiente(
             @PathVariable Long id,

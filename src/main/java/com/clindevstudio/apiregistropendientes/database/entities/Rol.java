@@ -25,6 +25,9 @@ public class Rol extends BaseEntity {
     @Column(length = 200)
     private String descripcion;
 
+    @Column(nullable = false)
+    private Long permisos = 0L;
+
     @OneToMany(mappedBy = "rol", fetch = FetchType.LAZY)
     private Set<Usuario> usuarios = new HashSet<>();
 

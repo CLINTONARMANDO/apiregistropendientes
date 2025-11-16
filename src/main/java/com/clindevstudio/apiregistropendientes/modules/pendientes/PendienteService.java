@@ -10,16 +10,13 @@ import com.clindevstudio.apiregistropendientes.modules.notificaciones.Notificaci
 import com.clindevstudio.apiregistropendientes.modules.notificaciones.dtos.NotificacionRequest;
 import com.clindevstudio.apiregistropendientes.modules.pendientes.dtos.*;
 import com.clindevstudio.apiregistropendientes.modules.pendientes.mappers.*;
-import com.clindevstudio.apiregistropendientes.modules.productos.dtos.PendienteItemRequest;
-import com.clindevstudio.apiregistropendientes.modules.productos.dtos.PendienteItemResponse;
-import com.clindevstudio.apiregistropendientes.modules.productos.mappers.PendienteItemMapper;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
-
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -88,6 +85,7 @@ public class PendienteService {
         return filtros;
     }
 
+
     @Transactional
     public PendienteResponse cambiarEstado(Long pendienteId, EstadoPendiente nuevoEstado) {
         Pendiente pendiente = pendienteRepository.findById(pendienteId)
@@ -153,7 +151,85 @@ public class PendienteService {
     }
 
 
+    @Transactional
+    public PendienteResponse postergarPendiente(Long pendienteId, PostergarPendienteRequest request) {
+        // 🔹 1. Validar que el pendiente existe
+        Pendiente pendiente = pendienteRepository.findById(pendienteId)
+                .orElseThrow(() -> new EntityNotFoundException("Pendiente no encontrado con id: " + pendienteId));
 
+        // 🔹 2. Validar que se puede postergar según el estado actual
+        if (!esPosiblePostergar(pendiente.getEstado())) {
+            throw new IllegalStateException("No se puede postergar un pendiente en estado: " + pendiente.getEstado());
+        }
+
+        // 🔹 3. Validar que la nueva fecha es posterior a la actual
+        if (request.getNuevaFecha() != null && pendiente.getFechaPendiente() != null) {
+            LocalDateTime fechaActualDelPendiente = pendiente.getFechaPendiente();
+
+            // Compara fechas y horas
+            if (!request.getNuevaFecha().isAfter(fechaActualDelPendiente)) {
+                throw new IllegalArgumentException("La nueva fecha debe ser posterior a la fecha actual del pendiente");
+            }
+        }
+        // 🔹 4. Actualizar el pendiente
+        EstadoPendiente estadoAnterior = pendiente.getEstado();
+        pendiente.setEstado(EstadoPendiente.POSTERGADO);
+
+        if (request.getNuevaFecha() != null) {
+            // ✅ Convertir LocalDate a LocalDateTime (inicio del día)
+            pendiente.setFechaPendiente(request.getNuevaFecha());
+        }
+
+        Pendiente actualizado = pendienteRepository.save(pendiente);
+
+        // 🔹 5. Crear notificación base
+        NotificacionRequest notificacionBase = new NotificacionRequest();
+        notificacionBase.setTitulo("Pendiente postergado");
+        notificacionBase.setMensaje(String.format(
+                "El pendiente #%d ha sido postergado. Nueva fecha: %s. Motivo: %s",
+                pendiente.getId(),
+                request.getNuevaFecha() != null ? request.getNuevaFecha().toString() : "Sin cambio"
+        ));
+        notificacionBase.setTipo(NotificationTipo.INFO);
+
+        // 🔹 6. Notificar según quién está involucrado
+        // a) Notificar al empleado asignado (si existe)
+        if (pendiente.getAsignadoA() != null) {
+            Usuario usuarioAsignado = usuarioRepository.findByEmpleadoIdAndVigenteTrue(pendiente.getAsignadoA().getId())
+                    .orElse(null);
+
+            if (usuarioAsignado != null) {
+                NotificacionRequest notifAsignado = new NotificacionRequest();
+                notifAsignado.setTitulo("Tu pendiente fue postergado");
+                notifAsignado.setMensaje(String.format(
+                        "El pendiente #%d que te fue asignado ha sido postergado hasta %s",
+                        pendiente.getId(),
+                        request.getNuevaFecha()
+                ));
+                notifAsignado.setUsuarioId(usuarioAsignado.getId());
+                notifAsignado.setTipo(NotificationTipo.WARNING);
+
+                notificacionService.crearNotificacion(notifAsignado);
+            }
+        }
+
+        // b) Notificar a los coordinadores y administradores
+        notificacionService.enviarNotificacionARol("CORD", notificacionBase);
+        notificacionService.enviarNotificacionARol("ADMN", notificacionBase);
+
+        return PendienteMapper.toResponse(actualizado);
+    }
+
+    /**
+     * Valida si un pendiente puede ser postergado según su estado actual
+     * @param estado Estado actual del pendiente
+     * @return true si se puede postergar, false en caso contrario
+     */
+    private boolean esPosiblePostergar(EstadoPendiente estado) {
+        return estado != EstadoPendiente.FINALIZADO &&
+                estado != EstadoPendiente.CANCELADO &&
+                estado != EstadoPendiente.POSTERGADO;
+    }
     public PendienteResponse crearPendiente(CrearPendienteRequest crearPendienteRequest) {
         // Puedes inicializar valores por defecto aquí
         Cliente cliente = clienteRepository.findById(crearPendienteRequest.getClienteId())

@@ -10,6 +10,7 @@ public class RolMapper {
         rolResponse.setId(rol.getId());
         rolResponse.setNombre(rol.getNombre());
         rolResponse.setDescripcion(rol.getDescripcion());
+        rolResponse.setPermisos(rol.getPermisos());
         return rolResponse;
     }
     public static Rol toEntity(RolRequest rolRequest) {
@@ -17,6 +18,7 @@ public class RolMapper {
         rol.setId(rolRequest.getId());
         rol.setNombre(rolRequest.getNombre());
         rol.setDescripcion(rolRequest.getDescripcion());
+        rol.setPermisos(rolRequest.getPermisos());
         return rol;
     }
 }
