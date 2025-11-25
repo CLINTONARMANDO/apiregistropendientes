@@ -7,6 +7,6 @@ import lombok.Data;
 public class RolRequest {
     private String id;
     private String nombre;
-    private Long permisos = 0L;
+    private Long permisos;
     private String descripcion;
 }
