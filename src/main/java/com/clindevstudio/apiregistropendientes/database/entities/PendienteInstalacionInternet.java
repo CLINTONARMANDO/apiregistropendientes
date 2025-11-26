@@ -1,6 +1,8 @@
 package com.clindevstudio.apiregistropendientes.database.entities;
 
 import com.clindevstudio.apiregistropendientes.database.base.BaseEntity;
+import com.clindevstudio.apiregistropendientes.database.enums.LugarPendiente;
+import com.clindevstudio.apiregistropendientes.database.enums.TipoInstalacion;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -21,5 +23,9 @@ public class PendienteInstalacionInternet extends BaseEntity {
 
     @Column(name = "velocidad_solicitada", length = 50)
     private String velocidadSolicitada;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "tipo_instalacion")
+    private TipoInstalacion tipoInstalacion;
 }
 

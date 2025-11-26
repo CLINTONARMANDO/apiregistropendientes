@@ -12,6 +12,7 @@ public class PendienteInstalacionInternetMapper {
         return PendienteInstalacionInternet.builder()
                 .pendiente(pendiente)
                 .velocidadSolicitada(request.getVelocidadSolicitada())
+                .tipoInstalacion(request.getTipoInstalacion())
                 .build();
     }
 
@@ -19,6 +20,7 @@ public class PendienteInstalacionInternetMapper {
     public static void updateEntity(PendienteInstalacionInternet entity, PendienteInstalacionInternetRequest request, Pendiente pendiente) {
         entity.setPendiente(pendiente);
         entity.setVelocidadSolicitada(request.getVelocidadSolicitada());
+        entity.setTipoInstalacion(request.getTipoInstalacion());
     }
 
     // 🔹 Convertir entidad a respuesta
@@ -27,6 +29,7 @@ public class PendienteInstalacionInternetMapper {
                 .id(entity.getPendienteId())
                 .pendienteId(entity.getPendiente() != null ? entity.getPendiente().getId() : null)
                 .velocidadSolicitada(entity.getVelocidadSolicitada())
+                .tipoInstalacion(entity.getTipoInstalacion())
                 .build();
     }
 }
