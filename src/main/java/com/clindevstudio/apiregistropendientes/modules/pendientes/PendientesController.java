@@ -26,11 +26,16 @@ public class PendientesController {
     // 🔹 CRUD GENERAL DE PENDIENTES
     // ==========================================================
 
-    // 🔹 Obtener pendiente por ID
     @GetMapping("/{id}")
-    public PendienteResponse obtenerPorId(@PathVariable Long id) {
-        return pendienteService.obtenerPorId(id);
+    public TransactionResponse<PendienteResponse> obtenerPorId(@PathVariable Long id) {
+        PendienteResponse pendiente = pendienteService.obtenerPorId(id);
+
+        return TransactionResponseFactory.success(
+                pendiente,
+                "Pendiente obtenido correctamente"
+        );
     }
+
     @PostMapping("/filtrar")
     public TransactionResponse<Page<PendienteResponse>> filtrarPendientes(
             @RequestBody FiltroPendienteRequest filtro,
