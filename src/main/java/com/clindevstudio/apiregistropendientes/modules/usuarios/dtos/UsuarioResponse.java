@@ -19,10 +19,12 @@ public class UsuarioResponse {
     public static class RolData {
         private String id;
         private String nombre;
+        private Long permisos;
 
-        public RolData(String id, String nombre) {
+        public RolData(String id, String nombre, Long permisos) {
             this.id = id;
             this.nombre = nombre;
+            this.permisos = permisos;
         }
     }
 

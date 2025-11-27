@@ -18,7 +18,8 @@ public class UsuarioMapper {
         if (usuario.getRol() != null) {
             usuarioResponse.setRol(new UsuarioResponse.RolData(
                     usuario.getRol().getId(),
-                    usuario.getRol().getNombre()
+                    usuario.getRol().getNombre(),
+                    usuario.getRol().getPermisos()
             ));
         }
 
