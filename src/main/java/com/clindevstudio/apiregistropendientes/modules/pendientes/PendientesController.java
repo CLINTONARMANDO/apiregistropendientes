@@ -309,6 +309,17 @@ public class PendientesController {
         );
     }
 
+    @PutMapping("/tiempos/{pendienteId}/cerrar-ultimo")
+    public TransactionResponse<PendienteTiempoResponse> cerrarUltimoTiempo(
+            @PathVariable Long pendienteId
+    ) {
+        return TransactionResponseFactory.success(
+                pendienteService.cerrarUltimoTiempo(pendienteId),
+                "Último tiempo cerrado correctamente"
+        );
+    }
+
+
     @DeleteMapping("/tiempos/{id}")
     public TransactionResponse<Void> eliminarTiempo(@PathVariable Long id) {
         pendienteService.deletePendienteTiempo(id);

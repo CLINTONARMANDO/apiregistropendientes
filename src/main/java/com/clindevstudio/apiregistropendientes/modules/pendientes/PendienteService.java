@@ -488,6 +488,24 @@ public class PendienteService {
         return PendienteTiempoMapper.toResponse(pendienteTiempoRepository.save(entity));
     }
 
+    public PendienteTiempoResponse cerrarUltimoTiempo(Long pendienteId) {
+
+        // Buscar el último tiempo vigente
+        PendienteTiempo ultimoTiempo = pendienteTiempoRepository
+                .findTopByPendienteIdAndVigenteTrueOrderByHoraInicioDesc(pendienteId)
+                .orElseThrow(() -> new EntityNotFoundException(
+                        "No existe un tiempo vigente para el pendienteId: " + pendienteId));
+
+        // Asignar hora fin = ahora
+        ultimoTiempo.setHoraFin(LocalDateTime.now());
+
+        // Guardar
+        PendienteTiempo guardado = pendienteTiempoRepository.save(ultimoTiempo);
+
+        return PendienteTiempoMapper.toResponse(guardado);
+    }
+
+
     public void deletePendienteTiempo(Long id) {
         PendienteTiempo entity = pendienteTiempoRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Registro de tiempo no encontrado con id: " + id));
