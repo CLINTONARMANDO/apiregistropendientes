@@ -1,7 +1,6 @@
 package com.clindevstudio.apiregistropendientes.database.entities;
 
 import com.clindevstudio.apiregistropendientes.database.base.BaseEntity;
-import com.clindevstudio.apiregistropendientes.database.enums.LugarPendiente;
 import com.clindevstudio.apiregistropendientes.database.enums.TipoInstalacion;
 import jakarta.persistence.*;
 import lombok.*;
