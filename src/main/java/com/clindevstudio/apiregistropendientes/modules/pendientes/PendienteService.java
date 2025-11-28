@@ -152,6 +152,69 @@ public class PendienteService {
 
 
     @Transactional
+    public PendienteInstalacionInternetResponse asignarPpoe(Long pendienteId, String ppoeUser, String ppoePassword) {
+        Pendiente pendiente = pendienteRepository.findById(pendienteId)
+                .orElseThrow(() -> new RuntimeException("Pendiente no encontrado con id: " + pendienteId));
+
+        PendienteInstalacionInternet pendienteInstalacionInternet = pendienteInstalacionInternetRepository.findByPendienteId(pendienteId)
+                .orElseThrow(() -> new RuntimeException("Pendiente no encontrado con id: " + pendienteId));
+
+
+        pendienteInstalacionInternet.setPpoe(ppoeUser);
+        pendienteInstalacionInternet.setPpoePassword(ppoePassword);
+        PendienteInstalacionInternet actualizado = pendienteInstalacionInternetRepository.save(pendienteInstalacionInternet);
+
+        // 🔹 Buscar el usuario asociado a este empleado
+        Usuario usuario = usuarioRepository.findByEmpleadoIdAndVigenteTrue(pendiente.getAsignadoA().getId())
+                .orElse(null);
+
+        if (usuario != null) {
+            // 🔹 Crear y enviar notificación al usuario del empleado
+            NotificacionRequest notificacion = new NotificacionRequest();
+            notificacion.setTitulo("Nuevo pendiente asignado");
+            notificacion.setMensaje("Se te ha asignado el Ppoe para la instalacion: " + pendienteInstalacionInternet.getPendienteId());
+            notificacion.setUsuarioId(usuario.getId());
+            notificacion.setTipo(NotificationTipo.INFO);
+
+            notificacionService.crearNotificacion(notificacion);
+        }
+
+        return PendienteInstalacionInternetMapper.toResponse(actualizado);
+    }
+
+
+    @Transactional
+    public PendienteInstalacionInternetResponse asignarVlan(Long pendienteId, String vlan) {
+        Pendiente pendiente = pendienteRepository.findById(pendienteId)
+                .orElseThrow(() -> new RuntimeException("Pendiente no encontrado con id: " + pendienteId));
+
+        PendienteInstalacionInternet pendienteInstalacionInternet = pendienteInstalacionInternetRepository.findByPendienteId(pendienteId)
+                .orElseThrow(() -> new RuntimeException("Pendiente no encontrado con id: " + pendienteId));
+
+
+        pendienteInstalacionInternet.setVlan(vlan);
+        PendienteInstalacionInternet actualizado = pendienteInstalacionInternetRepository.save(pendienteInstalacionInternet);
+
+        // 🔹 Buscar el usuario asociado a este empleado
+        Usuario usuario = usuarioRepository.findByEmpleadoIdAndVigenteTrue(pendiente.getAsignadoA().getId())
+                .orElse(null);
+
+        if (usuario != null) {
+            // 🔹 Crear y enviar notificación al usuario del empleado
+            NotificacionRequest notificacion = new NotificacionRequest();
+            notificacion.setTitulo("Nuevo pendiente asignado");
+            notificacion.setMensaje("Se te ha asignado el Vlan para la instalacion: " + pendienteInstalacionInternet.getPendienteId());
+            notificacion.setUsuarioId(usuario.getId());
+            notificacion.setTipo(NotificationTipo.INFO);
+
+            notificacionService.crearNotificacion(notificacion);
+        }
+
+        return PendienteInstalacionInternetMapper.toResponse(actualizado);
+    }
+
+
+    @Transactional
     public PendienteResponse postergarPendiente(Long pendienteId, PostergarPendienteRequest request) {
         // 🔹 1. Validar que el pendiente existe
         Pendiente pendiente = pendienteRepository.findById(pendienteId)

@@ -27,5 +27,14 @@ public class PendienteInstalacionInternet extends BaseEntity {
     @Enumerated(EnumType.STRING)
     @Column(name = "tipo_instalacion")
     private TipoInstalacion tipoInstalacion;
+
+    @Column(name = "vlan", length = 50)
+    private String vlan;
+
+    @Column(name = "ppoe", length = 50)
+    private String ppoe;
+
+    @Column(name = "ppoe_password", length = 50)
+    private String ppoePassword;
 }
 

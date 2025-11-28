@@ -1,6 +1,5 @@
 package com.clindevstudio.apiregistropendientes.modules.pendientes.dtos;
 
-import java.math.BigDecimal;
 
 import com.clindevstudio.apiregistropendientes.database.enums.TipoInstalacion;
 import lombok.*;
@@ -11,4 +10,7 @@ public class PendienteInstalacionInternetResponse {
     private Long pendienteId;
     private String velocidadSolicitada;
     private TipoInstalacion tipoInstalacion;
+    private String vlan;
+    private String ppoe;
+    private String ppoePassword;
 }

@@ -108,6 +108,36 @@ public class PendientesController {
         );
     }
 
+    @PutMapping("/{pendienteId}/instalacion-internet/ppoe")
+    public TransactionResponse<PendienteInstalacionInternetResponse> asignarPpoe(
+            @PathVariable Long pendienteId,
+            @RequestParam String ppoeUser,
+            @RequestParam String ppoePassword
+    ) {
+        PendienteInstalacionInternetResponse response =
+                pendienteService.asignarPpoe(pendienteId, ppoeUser, ppoePassword);
+
+        return TransactionResponseFactory.success(
+                response,
+                "PPPoE asignado correctamente"
+        );
+    }
+
+    @PutMapping("/{pendienteId}/instalacion-internet/vlan")
+    public TransactionResponse<PendienteInstalacionInternetResponse> asignarVlan(
+            @PathVariable Long pendienteId,
+            @RequestParam String vlan
+    ) {
+        PendienteInstalacionInternetResponse response =
+                pendienteService.asignarVlan(pendienteId, vlan);
+
+        return TransactionResponseFactory.success(
+                response,
+                "VLAN asignada correctamente"
+        );
+    }
+
+
     // ==========================================================
     // 🔹 PENDIENTE TRASLADO
     // ==========================================================

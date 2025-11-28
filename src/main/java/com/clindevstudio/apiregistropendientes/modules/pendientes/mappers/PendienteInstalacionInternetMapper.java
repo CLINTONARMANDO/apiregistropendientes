@@ -30,6 +30,9 @@ public class PendienteInstalacionInternetMapper {
                 .pendienteId(entity.getPendiente() != null ? entity.getPendiente().getId() : null)
                 .velocidadSolicitada(entity.getVelocidadSolicitada())
                 .tipoInstalacion(entity.getTipoInstalacion())
+                .ppoe(entity.getPpoe())
+                .vlan(entity.getVlan())
+                .ppoePassword(entity.getPpoePassword())
                 .build();
     }
 }
