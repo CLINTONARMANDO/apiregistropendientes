@@ -455,9 +455,6 @@ public class PendienteService {
 
     public List<PendienteTiempoResponse> findTiemposByPendiente(Long pendienteId) {
         List<PendienteTiempo> tiempos = pendienteTiempoRepository.findByPendienteIdAndVigenteTrue(pendienteId);
-        if (tiempos.isEmpty()) {
-            throw new EntityNotFoundException("No se encontraron registros de tiempo para el pendienteId: " + pendienteId);
-        }
         return tiempos.stream()
                 .map(PendienteTiempoMapper::toResponse)
                 .toList();
