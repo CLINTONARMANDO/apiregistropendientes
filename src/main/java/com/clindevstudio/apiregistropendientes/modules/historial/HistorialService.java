@@ -62,10 +62,6 @@ public class HistorialService {
     public List<HistorialResponse> buscarPorPendiente(Long pendienteId) {
         List<Historial> historiales = historialRepository.findByPendienteIdOrderByFechaCreacionDesc(pendienteId);
 
-        if (historiales.isEmpty()) {
-            throw new EntityNotFoundException("No se encontraron historiales para el pendiente con ID: " + pendienteId);
-        }
-
         return historiales.stream()
                 .map(HistorialMapper::toResponse)
                 .collect(Collectors.toList());
