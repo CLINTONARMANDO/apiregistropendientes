@@ -141,6 +141,7 @@ public class PendienteService {
             notificacion.setMensaje("Se te ha asignado el pendiente: " + pendiente.getId());
             notificacion.setUsuarioId(usuario.getId());
             notificacion.setTipo(NotificationTipo.INFO);
+            notificacion.setEstado(NotificationEstado.NO_LEIDO);
 
             notificacionService.crearNotificacion(notificacion);
         }
