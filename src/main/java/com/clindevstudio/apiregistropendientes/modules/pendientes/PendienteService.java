@@ -1,9 +1,7 @@
 package com.clindevstudio.apiregistropendientes.modules.pendientes;
 
 import com.clindevstudio.apiregistropendientes.database.entities.*;
-import com.clindevstudio.apiregistropendientes.database.enums.EstadoPendiente;
-import com.clindevstudio.apiregistropendientes.database.enums.NotificationTipo;
-import com.clindevstudio.apiregistropendientes.database.enums.TipoPendiente;
+import com.clindevstudio.apiregistropendientes.database.enums.*;
 import com.clindevstudio.apiregistropendientes.database.repositories.*;
 import com.clindevstudio.apiregistropendientes.database.specifications.PendienteSpecification;
 import com.clindevstudio.apiregistropendientes.modules.notificaciones.NotificacionService;
@@ -293,6 +291,7 @@ public class PendienteService {
                 estado != EstadoPendiente.CANCELADO &&
                 estado != EstadoPendiente.POSTERGADO;
     }
+
     public PendienteResponse crearPendiente(CrearPendienteRequest crearPendienteRequest) {
         // Puedes inicializar valores por defecto aquí
         Cliente cliente = clienteRepository.findById(crearPendienteRequest.getClienteId())
@@ -303,6 +302,16 @@ public class PendienteService {
         if (pendiente.getEstado() == null) {
             pendiente.setEstado(EstadoPendiente.REGISTRADO); // Estado inicial por defecto
         }
+        notificacionService.enviarNotificacionPorPermiso(
+                Permiso.ASIGNAR_TECNICO,
+                new NotificacionRequest(
+                        "Nuevo pendiente",
+                        "Se requiere asignación de técnico",
+                        NotificationTipo.INFO,
+                        NotificationEstado.NO_LEIDO,
+                        0L
+                )
+        );
         return PendienteMapper.toResponse(pendienteRepository.save(pendiente));
     }
 

@@ -13,6 +13,7 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
     boolean existsByNombre(String nombre);
     boolean existsByDni(String dni);
     boolean existsByEmail(String email);
+    List<Usuario> findByRolIn(List<Rol> roles);
     public List<Usuario> findAllByVigente(Boolean vigente);
 
     boolean existsByRolId(String id);

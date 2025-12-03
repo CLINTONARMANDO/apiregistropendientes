@@ -6,6 +6,7 @@ import com.clindevstudio.apiregistropendientes.database.entities.Rol;
 import com.clindevstudio.apiregistropendientes.database.entities.Usuario;
 import com.clindevstudio.apiregistropendientes.database.enums.NotificationEstado;
 import com.clindevstudio.apiregistropendientes.database.enums.NotificationTipo;
+import com.clindevstudio.apiregistropendientes.database.enums.Permiso;
 import com.clindevstudio.apiregistropendientes.database.repositories.NotificacionRepository;
 import com.clindevstudio.apiregistropendientes.database.repositories.RolRepository;
 import com.clindevstudio.apiregistropendientes.database.repositories.UsuarioRepository;
@@ -117,5 +118,46 @@ public class NotificacionService {
                 .orElseThrow(() -> new RuntimeException("Notificación no encontrada"));
         notificacion.setVigente(false);
         notificacionRepository.save(notificacion);
+    }
+
+    // 🔹 Enviar notificación a usuarios cuyos roles tengan un permiso específico
+    @Transactional
+    public void enviarNotificacionPorPermiso(Permiso permisoRequerido, NotificacionRequest requestBase) {
+
+        long bit = permisoRequerido.getBit();
+
+        // 1️⃣ Buscar roles que tengan ese permiso en su bitmask
+        List<Rol> roles = rolRepository.findAll()
+                .stream()
+                .filter(r -> (r.getPermisos() & bit) != 0) // rol tiene el permiso
+                .toList();
+
+        if (roles.isEmpty()) {
+            throw new RuntimeException("No existen roles con el permiso: " + permisoRequerido.name());
+        }
+
+        // 2️⃣ Buscar usuarios con esos roles
+        List<Usuario> usuarios = usuarioRepository.findByRolIn(roles);
+
+        if (usuarios.isEmpty()) {
+            throw new RuntimeException("No existen usuarios con el permiso: " + permisoRequerido.name());
+        }
+
+        // 3️⃣ Crear y enviar notificación
+        for (Usuario usuario : usuarios) {
+
+            NotificacionRequest req = new NotificacionRequest();
+            req.setTitulo(requestBase.getTitulo());
+            req.setMensaje(requestBase.getMensaje());
+            req.setTipo(requestBase.getTipo());
+            req.setUsuarioId(usuario.getId());
+
+            Notificacion notificacion = NotificacionMapper.toEntity(req);
+            NotificacionResponse response =
+                    NotificacionMapper.toResponse(notificacionRepository.save(notificacion));
+
+            // 🚀 Enviar por WebSocket
+            notificacionSocketController.enviarNotificacionUsuario(usuario.getId(), response);
+        }
     }
 }
