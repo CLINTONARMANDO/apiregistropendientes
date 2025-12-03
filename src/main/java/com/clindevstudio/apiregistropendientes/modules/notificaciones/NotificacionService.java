@@ -135,7 +135,6 @@ public class NotificacionService {
         if (roles.isEmpty()) {
             throw new RuntimeException("No existen roles con el permiso: " + permisoRequerido.name());
         }
-
         // 2️⃣ Buscar usuarios con esos roles
         List<Usuario> usuarios = usuarioRepository.findByRolIn(roles);
 
