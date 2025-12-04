@@ -92,31 +92,66 @@ public class PendienteService {
         pendiente.setEstado(nuevoEstado);
         Pendiente actualizado = pendienteRepository.save(pendiente);
 
-        // 🔹 Crear notificación base
-        NotificacionRequest notificacionBase = new NotificacionRequest();
-        notificacionBase.setTitulo("Cambio de estado de pendiente");
-        notificacionBase.setMensaje("El pendiente '" + pendiente.getId() + "' ha cambiado su estado a " + nuevoEstado.name());
-        notificacionBase.setTipo(NotificationTipo.INFO);
-
-        // 🔹 Enviar notificaciones según el estado
         switch (nuevoEstado) {
-            case REGISTRADO -> {
-                notificacionService.enviarNotificacionARol("ADMN", notificacionBase);
-                notificacionService.enviarNotificacionARol("CORD", notificacionBase);
-            }
+
             case SIN_PPOE -> {
-                notificacionService.enviarNotificacionARol("ATAC", notificacionBase);
+                notificacionService.enviarNotificacionPorPermiso(
+                        Permiso.ASIGNAR_PPOE,
+                        new NotificacionRequest(
+                                "Pendiente requiere PPOE",
+                                "El pendiente #" + pendiente.getId() + " requiere asignación de usuario PPOE.",
+                                NotificationTipo.WARNING,
+                                NotificationEstado.NO_LEIDO,
+                                0L
+                        )
+                );
             }
+
+            case SIN_VLAN -> {
+                notificacionService.enviarNotificacionPorPermiso(
+                        Permiso.ASIGNAR_VLAN,
+                        new NotificacionRequest(
+                                "Pendiente requiere VLAN",
+                                "El pendiente #" + pendiente.getId() + " necesita asignación de VLAN.",
+                                NotificationTipo.WARNING,
+                                NotificationEstado.NO_LEIDO,
+                                0L
+                        )
+                );
+            }
+
             case POR_VALIDAR -> {
-                notificacionService.enviarNotificacionARol("CONT", notificacionBase);
+                notificacionService.enviarNotificacionPorPermiso(
+                        Permiso.REVISAR_GASTOS,
+                        new NotificacionRequest(
+                                "Pendiente por validar",
+                                "El pendiente #" + pendiente.getId() + " está listo para revisión y validación.",
+                                NotificationTipo.INFO,
+                                NotificationEstado.NO_LEIDO,
+                                0L
+                        )
+                );
             }
-            default -> {
-                // No se notifica para otros estados
+
+            case ASIGNADO -> {
+                notificacionService.enviarNotificacionPorPermiso(
+                        Permiso.ASIGNAR_TECNICO,
+                        new NotificacionRequest(
+                                "Nuevo pendiente asignado",
+                                "Se ha asignado el pendiente #" + pendiente.getId(),
+                                NotificationTipo.INFO,
+                                NotificationEstado.NO_LEIDO,
+                                0L
+                        )
+                );
             }
+
+            default -> {}
         }
 
         return PendienteMapper.toResponse(actualizado);
     }
+
 
 
     @Transactional
