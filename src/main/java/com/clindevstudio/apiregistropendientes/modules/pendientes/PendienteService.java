@@ -169,17 +169,17 @@ public class PendienteService {
         Usuario usuario = usuarioRepository.findByEmpleadoIdAndVigenteTrue(idEmpleado)
                 .orElse(null);
 
-        if (usuario != null) {
-            // 🔹 Crear y enviar notificación al usuario del empleado
-            NotificacionRequest notificacion = new NotificacionRequest();
-            notificacion.setTitulo("Nuevo pendiente asignado");
-            notificacion.setMensaje("Se te ha asignado el pendiente: " + pendiente.getId());
-            notificacion.setUsuarioId(usuario.getId());
-            notificacion.setTipo(NotificationTipo.INFO);
-            notificacion.setEstado(NotificationEstado.NO_LEIDO);
-
-            notificacionService.crearNotificacion(notificacion);
-        }
+//        if (usuario != null) {
+//            // 🔹 Crear y enviar notificación al usuario del empleado
+//            NotificacionRequest notificacion = new NotificacionRequest();
+//            notificacion.setTitulo("Nuevo pendiente asignado");
+//            notificacion.setMensaje("Se te ha asignado el pendiente: " + pendiente.getId());
+//            notificacion.setUsuarioId(usuario.getId());
+//            notificacion.setTipo(NotificationTipo.INFO);
+//            notificacion.setEstado(NotificationEstado.NO_LEIDO);
+//
+//            notificacionService.crearNotificacion(notificacion);
+//        }
 
         return PendienteMapper.toResponse(actualizado);
     }
@@ -202,16 +202,17 @@ public class PendienteService {
         Usuario usuario = usuarioRepository.findByEmpleadoIdAndVigenteTrue(pendiente.getAsignadoA().getId())
                 .orElse(null);
 
-        if (usuario != null) {
-            // 🔹 Crear y enviar notificación al usuario del empleado
-            NotificacionRequest notificacion = new NotificacionRequest();
-            notificacion.setTitulo("Nuevo pendiente asignado");
-            notificacion.setMensaje("Se te ha asignado el Ppoe para la instalacion: " + pendienteInstalacionInternet.getPendienteId());
-            notificacion.setUsuarioId(usuario.getId());
-            notificacion.setTipo(NotificationTipo.INFO);
-
-            notificacionService.crearNotificacion(notificacion);
-        }
+//        if (usuario != null) {
+//            // 🔹 Crear y enviar notificación al usuario del empleado
+//            NotificacionRequest notificacion = new NotificacionRequest();
+//            notificacion.setTitulo("Nuevo pendiente asignado");
+//            notificacion.setMensaje("Se te ha asignado el Ppoe para la instalacion: " + pendienteInstalacionInternet.getPendienteId());
+//            notificacion.setUsuarioId(usuario.getId());
+//            notificacion.setTipo(NotificationTipo.INFO);
+//            notificacion.setEstado(NotificationEstado.NO_LEIDO);
+//
+//            notificacionService.crearNotificacion(notificacion);
+//        }
 
         return PendienteInstalacionInternetMapper.toResponse(actualizado);
     }
@@ -233,16 +234,17 @@ public class PendienteService {
         Usuario usuario = usuarioRepository.findByEmpleadoIdAndVigenteTrue(pendiente.getAsignadoA().getId())
                 .orElse(null);
 
-        if (usuario != null) {
-            // 🔹 Crear y enviar notificación al usuario del empleado
-            NotificacionRequest notificacion = new NotificacionRequest();
-            notificacion.setTitulo("Nuevo pendiente asignado");
-            notificacion.setMensaje("Se te ha asignado el Vlan para la instalacion: " + pendienteInstalacionInternet.getPendienteId());
-            notificacion.setUsuarioId(usuario.getId());
-            notificacion.setTipo(NotificationTipo.INFO);
-
-            notificacionService.crearNotificacion(notificacion);
-        }
+//        if (usuario != null) {
+//            // 🔹 Crear y enviar notificación al usuario del empleado
+//            NotificacionRequest notificacion = new NotificacionRequest();
+//            notificacion.setTitulo("Nuevo pendiente asignado");
+//            notificacion.setMensaje("Se te ha asignado el Vlan para la instalacion: " + pendienteInstalacionInternet.getPendienteId());
+//            notificacion.setUsuarioId(usuario.getId());
+//            notificacion.setTipo(NotificationTipo.INFO);
+//            notificacion.setEstado(NotificationEstado.NO_LEIDO);
+//
+//            notificacionService.crearNotificacion(notificacion);
+//        }
 
         return PendienteInstalacionInternetMapper.toResponse(actualizado);
     }
@@ -335,16 +337,16 @@ public class PendienteService {
         if (pendiente.getEstado() == null) {
             pendiente.setEstado(EstadoPendiente.REGISTRADO); // Estado inicial por defecto
         }
-        notificacionService.enviarNotificacionPorPermiso(
-                Permiso.ASIGNAR_TECNICO,
-                new NotificacionRequest(
-                        "Nuevo pendiente",
-                        "Se requiere asignación de técnico",
-                        NotificationTipo.INFO,
-                        NotificationEstado.NO_LEIDO,
-                        0L
-                )
-        );
+//        notificacionService.enviarNotificacionPorPermiso(
+//                Permiso.ASIGNAR_TECNICO,
+//                new NotificacionRequest(
+//                        "Nuevo pendiente",
+//                        "Se requiere asignación de técnico",
+//                        NotificationTipo.INFO,
+//                        NotificationEstado.NO_LEIDO,
+//                        0L
+//                )
+//        );
         return PendienteMapper.toResponse(pendienteRepository.save(pendiente));
     }
 
