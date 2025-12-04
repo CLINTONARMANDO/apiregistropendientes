@@ -333,7 +333,7 @@ public class PendienteService {
         Cliente cliente = clienteRepository.findById(crearPendienteRequest.getClienteId())
                 .orElseThrow(() -> new EntityNotFoundException("Cliente no encontrado con id: " + crearPendienteRequest.getClienteId()));
         Empleado empleado = empleadoRepository.findById(crearPendienteRequest.getRegistradoPorId())
-                .orElseThrow(() -> new EntityNotFoundException("Empleado no encontrado con id: " + crearPendienteRequest.getAsignadoAId()));
+                .orElseThrow(() -> new EntityNotFoundException("Empleado no encontrado con id: " + crearPendienteRequest.getRegistradoPorId()));
         Pendiente pendiente = PendienteMapper.toEntity(crearPendienteRequest, cliente, empleado);
         if (pendiente.getEstado() == null) {
             pendiente.setEstado(EstadoPendiente.REGISTRADO); // Estado inicial por defecto
