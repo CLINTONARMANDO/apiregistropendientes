@@ -279,41 +279,37 @@ public class PendienteService {
 
         Pendiente actualizado = pendienteRepository.save(pendiente);
 
-        // 🔹 5. Crear notificación base
-        NotificacionRequest notificacionBase = new NotificacionRequest();
-        notificacionBase.setTitulo("Pendiente postergado");
-        notificacionBase.setMensaje(String.format(
-                "El pendiente #%d ha sido postergado. Nueva fecha: %s.",
-                pendiente.getId(),
-                request.getNuevaFecha() != null ? request.getNuevaFecha().toString() : "Sin cambio"
-        ));
-        notificacionBase.setTipo(NotificationTipo.INFO);
-
-        // 🔹 6. Notificar según quién está involucrado
-        // a) Notificar al empleado asignado (si existe)
-        if (pendiente.getAsignadoA() != null) {
-            Usuario usuarioAsignado = usuarioRepository.findByEmpleadoIdAndVigenteTrue(pendiente.getAsignadoA().getId())
-                    .orElse(null);
-
-            if (usuarioAsignado != null) {
-                NotificacionRequest notifAsignado = new NotificacionRequest();
-                notifAsignado.setTitulo("Tu pendiente fue postergado");
-                notifAsignado.setMensaje(String.format(
-                        "El pendiente #%d que te fue asignado ha sido postergado hasta %s",
-                        pendiente.getId(),
-                        request.getNuevaFecha()
-                ));
-                notifAsignado.setUsuarioId(usuarioAsignado.getId());
-                notifAsignado.setEstado(NotificationEstado.NO_LEIDO);
-                notifAsignado.setTipo(NotificationTipo.WARNING);
-
-                notificacionService.crearNotificacion(notifAsignado);
-            }
-        }
-
-        // b) Notificar a los coordinadores y administradores
-        notificacionService.enviarNotificacionARol("CORD", notificacionBase);
-        notificacionService.enviarNotificacionARol("ADMN", notificacionBase);
+//        // 🔹 5. Crear notificación base
+//        NotificacionRequest notificacionBase = new NotificacionRequest();
+//        notificacionBase.setTitulo("Pendiente postergado");
+//        notificacionBase.setMensaje(String.format(
+//                "El pendiente #%d ha sido postergado. Nueva fecha: %s.",
+//                pendiente.getId(),
+//                request.getNuevaFecha() != null ? request.getNuevaFecha().toString() : "Sin cambio"
+//        ));
+//        notificacionBase.setTipo(NotificationTipo.INFO);
+//
+//        // 🔹 6. Notificar según quién está involucrado
+//        // a) Notificar al empleado asignado (si existe)
+//        if (pendiente.getAsignadoA() != null) {
+//            Usuario usuarioAsignado = usuarioRepository.findByEmpleadoIdAndVigenteTrue(pendiente.getAsignadoA().getId())
+//                    .orElse(null);
+//
+//            if (usuarioAsignado != null) {
+//                NotificacionRequest notifAsignado = new NotificacionRequest();
+//                notifAsignado.setTitulo("Tu pendiente fue postergado");
+//                notifAsignado.setMensaje(String.format(
+//                        "El pendiente #%d que te fue asignado ha sido postergado hasta %s",
+//                        pendiente.getId(),
+//                        request.getNuevaFecha()
+//                ));
+//                notifAsignado.setUsuarioId(usuarioAsignado.getId());
+//                notifAsignado.setEstado(NotificationEstado.NO_LEIDO);
+//                notifAsignado.setTipo(NotificationTipo.WARNING);
+//
+//                notificacionService.crearNotificacion(notifAsignado);
+//            }
+//        }
 
         return PendienteMapper.toResponse(actualizado);
     }
