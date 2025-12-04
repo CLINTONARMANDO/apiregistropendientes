@@ -304,6 +304,7 @@ public class PendienteService {
                         request.getNuevaFecha()
                 ));
                 notifAsignado.setUsuarioId(usuarioAsignado.getId());
+                notifAsignado.setEstado(NotificationEstado.NO_LEIDO);
                 notifAsignado.setTipo(NotificationTipo.WARNING);
 
                 notificacionService.crearNotificacion(notifAsignado);
