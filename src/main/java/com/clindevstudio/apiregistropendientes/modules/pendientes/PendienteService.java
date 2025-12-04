@@ -283,7 +283,7 @@ public class PendienteService {
         NotificacionRequest notificacionBase = new NotificacionRequest();
         notificacionBase.setTitulo("Pendiente postergado");
         notificacionBase.setMensaje(String.format(
-                "El pendiente #%d ha sido postergado. Nueva fecha: %s. Motivo: %s",
+                "El pendiente #%d ha sido postergado. Nueva fecha: %s.",
                 pendiente.getId(),
                 request.getNuevaFecha() != null ? request.getNuevaFecha().toString() : "Sin cambio"
         ));
