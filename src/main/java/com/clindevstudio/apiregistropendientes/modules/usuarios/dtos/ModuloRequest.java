@@ -6,6 +6,7 @@ import lombok.Data;
 public class ModuloRequest {
     private String nombre;
     private String descripcion;
+    private String icono;
     private String ruta;
     private Long moduloPadreId; // solo el id del padre
     private Boolean activo;

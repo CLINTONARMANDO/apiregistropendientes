@@ -18,6 +18,7 @@ public class PendienteItemMapper {
         return PendienteItem.builder()
                 .pendiente(pendiente)
                 .producto(producto)
+                .descripcion(request.getDescripcion())
                 .cantidad(request.getCantidad())
                 .costoUnitario(request.getCostoUnitario())
                 .costoTotal(request.getCostoTotal())
@@ -30,6 +31,7 @@ public class PendienteItemMapper {
 
         entity.setPendiente(pendiente);
         entity.setProducto(producto);
+        entity.setDescripcion(request.getDescripcion());
         entity.setCantidad(request.getCantidad());
         entity.setCostoUnitario(request.getCostoUnitario());
         entity.setCostoTotal(request.getCostoTotal());
@@ -44,6 +46,7 @@ public class PendienteItemMapper {
                 .pendienteId(entity.getPendiente() != null ? entity.getPendiente().getId() : null)
                 .productoId(entity.getProducto() != null ? entity.getProducto().getId() : null)
                 .productoNombre(entity.getProducto() != null ? entity.getProducto().getNombre() : null)
+                .descripcion(entity.getDescripcion())
                 .cantidad(entity.getCantidad())
                 .costoUnitario(entity.getCostoUnitario())
                 .costoTotal(entity.getCostoTotal())

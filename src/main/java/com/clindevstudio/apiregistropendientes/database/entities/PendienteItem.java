@@ -26,6 +26,8 @@ public class PendienteItem extends BaseEntity{
     @JoinColumn(name = "producto_id")
     private Producto producto;
 
+    private String descripcion;
+
     private Integer cantidad;
 
     @Column(name = "costo_unitario", precision = 10, scale = 2)

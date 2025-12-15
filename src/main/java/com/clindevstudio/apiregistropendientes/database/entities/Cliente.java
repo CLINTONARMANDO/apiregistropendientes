@@ -34,6 +34,9 @@ public class Cliente extends BaseEntity {
     private String numeroDocumento;
 
     @Column(length = 200)
+    private String codigoCliente;
+
+    @Column(length = 200)
     private String direccion;
 
     @Column(length = 20)

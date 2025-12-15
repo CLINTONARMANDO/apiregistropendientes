@@ -20,6 +20,7 @@ public class ClienteMapper {
                 .nombre(request.getNombre())
                 .tipoDocumento(request.getTipoDocumento())
                 .numeroDocumento(request.getNumeroDocumento())
+                .codigoCliente(request.getCodigoCliente())
                 .direccion(request.getDireccion())
                 .telefono(request.getTelefono())
                 .email(request.getEmail())
@@ -37,6 +38,7 @@ public class ClienteMapper {
         entity.setNombre(request.getNombre());
         entity.setTipoDocumento(request.getTipoDocumento());
         entity.setNumeroDocumento(request.getNumeroDocumento());
+        entity.setCodigoCliente(request.getCodigoCliente());
         entity.setDireccion(request.getDireccion());
         entity.setTelefono(request.getTelefono());
         entity.setEmail(request.getEmail());
@@ -55,6 +57,7 @@ public class ClienteMapper {
                 .nombre(entity.getNombre())
                 .tipoDocumento(entity.getTipoDocumento())
                 .numeroDocumento(entity.getNumeroDocumento())
+                .codigoCliente(entity.getCodigoCliente())
                 .direccion(entity.getDireccion())
                 .telefono(entity.getTelefono())
                 .email(entity.getEmail())

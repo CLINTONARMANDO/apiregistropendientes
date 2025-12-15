@@ -19,6 +19,8 @@ public class Modulo extends BaseEntity {
 
     private String descripcion;
 
+    private String icono;
+
     private String ruta;
 
     @ManyToOne

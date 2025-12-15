@@ -11,6 +11,7 @@ public class ModuloMapper {
         Modulo modulo = new Modulo();
         modulo.setNombre(request.getNombre());
         modulo.setDescripcion(request.getDescripcion());
+        modulo.setIcono(request.getIcono());
         modulo.setRuta(request.getRuta());
         modulo.setVigente(request.getActivo() != null ? request.getActivo() : true);
         modulo.setModuloPadre(moduloPadre);
@@ -20,6 +21,7 @@ public class ModuloMapper {
         Modulo modulo = new Modulo();
         modulo.setNombre(request.getNombre());
         modulo.setDescripcion(request.getDescripcion());
+        modulo.setIcono(request.getIcono());
         modulo.setRuta(request.getRuta());
         modulo.setVigente(request.getActivo() != null ? request.getActivo() : true);
         modulo.setModuloPadre(null);
@@ -31,6 +33,7 @@ public class ModuloMapper {
         response.setId(modulo.getId());
         response.setNombre(modulo.getNombre());
         response.setDescripcion(modulo.getDescripcion());
+        response.setIcono(modulo.getIcono());
         response.setRuta(modulo.getRuta());
         response.setActivo(modulo.getVigente());
 
@@ -46,6 +49,7 @@ public class ModuloMapper {
     public static void updateEntity(Modulo modulo, ModuloRequest request, Modulo moduloPadre) {
         modulo.setNombre(request.getNombre());
         modulo.setDescripcion(request.getDescripcion());
+        modulo.setIcono(request.getIcono());
         modulo.setRuta(request.getRuta());
         modulo.setVigente(request.getActivo() != null ? request.getActivo() : modulo.getVigente());
         modulo.setModuloPadre(moduloPadre);

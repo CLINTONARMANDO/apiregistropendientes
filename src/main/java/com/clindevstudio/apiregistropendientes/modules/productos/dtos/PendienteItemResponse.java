@@ -9,6 +9,7 @@ public class PendienteItemResponse {
     private Long pendienteId;
     private Long productoId;
     private String productoNombre; // opcional: útil para mostrar en UI
+    private String descripcion;
     private Integer cantidad;
     private BigDecimal costoUnitario;
     private BigDecimal costoTotal;

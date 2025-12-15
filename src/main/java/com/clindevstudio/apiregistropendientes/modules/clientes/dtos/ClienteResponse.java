@@ -15,6 +15,7 @@ public class ClienteResponse {
     private TipoCliente tipoCliente;
     private String nombre;
     private TipoDocumento tipoDocumento;
+    private String codigoCliente;
     private String numeroDocumento;
     private String direccion;
     private String telefono;

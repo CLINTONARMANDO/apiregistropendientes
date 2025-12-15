@@ -14,6 +14,7 @@ public class ClienteRequest {
     private String nombre;                    // Razón social o nombre completo
     private TipoDocumento tipoDocumento;      // DNI, RUC, CE, etc.
     private String numeroDocumento;
+    private String codigoCliente;
     private String direccion;
     private String telefono;
     private String email;

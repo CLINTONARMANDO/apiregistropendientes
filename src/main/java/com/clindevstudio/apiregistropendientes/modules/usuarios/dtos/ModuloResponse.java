@@ -7,6 +7,7 @@ public class ModuloResponse {
     private Long id;
     private String nombre;
     private String descripcion;
+    private String icono;
     private String ruta;
     private Long moduloPadreId; // id del padre si existe
     private String moduloPadreNombre; // opcional, para mostrar en UI

@@ -9,6 +9,7 @@ public enum EstadoPendiente {
     SIN_PPOE,
     SIN_VLAN,
     POR_VALIDAR,
+    OBSERVADO,
     FINALIZADO,
     POSTERGADO,
     CANCELADO
