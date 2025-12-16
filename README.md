@@ -34,7 +34,10 @@ stateDiagram-v2
     FINALIZADO --> [*]
 
     CANCELADO --> POSTERGADO : Postergar
+```
+## 🟢 Estados del Pendiente
 
+```mermaid
 
     [*] --> OK
 
@@ -47,3 +50,4 @@ stateDiagram-v2
     PENDIENTE_PPPoE --> OK : PPPoE configurado
     PENDIENTE_VLAN --> OK : VLAN configurada
     PENDIENTE_PPPoE_Y_VLAN --> OK : Configuración completa
+```
