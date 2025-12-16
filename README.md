@@ -35,7 +35,7 @@ stateDiagram-v2
 
     CANCELADO --> POSTERGADO : Postergar
 ```
-## 🟢 Estados del Pendiente
+## 🟢 Subestadis ocacionales del Pendiente
 
 ```mermaid
 
