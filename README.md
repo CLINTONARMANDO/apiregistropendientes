@@ -39,6 +39,7 @@ stateDiagram-v2
 
 ```mermaid
 
+stateDiagram-v2
     [*] --> OK
 
     OK --> PENDIENTE_PPPoE : Solicitar PPPoE
