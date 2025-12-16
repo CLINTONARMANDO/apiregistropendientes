@@ -36,7 +36,6 @@ stateDiagram-v2
     CANCELADO --> POSTERGADO : Postergar
 
 
-stateDiagram-v2
     [*] --> OK
 
     OK --> PENDIENTE_PPPoE : Solicitar PPPoE
