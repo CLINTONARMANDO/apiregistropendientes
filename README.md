@@ -34,3 +34,17 @@ stateDiagram-v2
     FINALIZADO --> [*]
 
     CANCELADO --> POSTERGADO : Postergar
+
+
+stateDiagram-v2
+    [*] --> OK
+
+    OK --> PENDIENTE_PPPoE : Solicitar PPPoE
+    OK --> PENDIENTE_VLAN : Solicitar VLAN
+
+    PENDIENTE_PPPoE --> PENDIENTE_PPPoE_Y_VLAN : Solicitar VLAN
+    PENDIENTE_VLAN --> PENDIENTE_PPPoE_Y_VLAN : Solicitar PPPoE
+
+    PENDIENTE_PPPoE --> OK : PPPoE configurado
+    PENDIENTE_VLAN --> OK : VLAN configurada
+    PENDIENTE_PPPoE_Y_VLAN --> OK : Configuración completa
