@@ -11,7 +11,6 @@ stateDiagram-v2
     ASIGNADO --> EN_PROGRESO : Comenzar trabajo
     ASIGNADO --> REGISTRADO : Reasignar
     ASIGNADO --> CANCELADO : Cancelar
-    ASIGNADO --> POR_VALIDAR : Terminar trabajo
 
 
     EN_PROGRESO --> PAUSADO : Parar trabajo
