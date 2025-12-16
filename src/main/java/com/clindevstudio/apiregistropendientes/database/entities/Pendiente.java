@@ -1,10 +1,7 @@
 package com.clindevstudio.apiregistropendientes.database.entities;
 
 import com.clindevstudio.apiregistropendientes.database.base.BaseEntity;
-import com.clindevstudio.apiregistropendientes.database.enums.EstadoPendiente;
-import com.clindevstudio.apiregistropendientes.database.enums.LugarPendiente;
-import com.clindevstudio.apiregistropendientes.database.enums.PrioridadPendiente;
-import com.clindevstudio.apiregistropendientes.database.enums.TipoPendiente;
+import com.clindevstudio.apiregistropendientes.database.enums.*;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -50,6 +47,10 @@ public class Pendiente extends BaseEntity{
     @Enumerated(EnumType.STRING)
     @Column(name = "lugar", nullable = false)
     private LugarPendiente lugar;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "empresa")
+    private EmpresaPendiente empresa;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "prioridad", nullable = false)

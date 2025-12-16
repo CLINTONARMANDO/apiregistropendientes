@@ -1,11 +1,8 @@
 package com.clindevstudio.apiregistropendientes.modules.pendientes.dtos;
 
-import com.clindevstudio.apiregistropendientes.database.enums.EstadoPendiente;
-import com.clindevstudio.apiregistropendientes.database.enums.TipoPendiente;
+import com.clindevstudio.apiregistropendientes.database.enums.*;
 import lombok.Data;
 import java.time.LocalDateTime;
-import com.clindevstudio.apiregistropendientes.database.enums.LugarPendiente;
-import com.clindevstudio.apiregistropendientes.database.enums.PrioridadPendiente;
 
 @Data
 public class CrearPendienteRequest {
@@ -13,6 +10,7 @@ public class CrearPendienteRequest {
     private Long asignadoAId;
     private LocalDateTime fechaPendiente;
     private EstadoPendiente estado;
+    private EmpresaPendiente empresa;
     private LugarPendiente lugar;
     private PrioridadPendiente prioridad;
     private TipoPendiente tipo;

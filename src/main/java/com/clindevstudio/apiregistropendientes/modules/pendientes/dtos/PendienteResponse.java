@@ -1,10 +1,7 @@
 
 package com.clindevstudio.apiregistropendientes.modules.pendientes.dtos;
 
-import com.clindevstudio.apiregistropendientes.database.enums.EstadoPendiente;
-import com.clindevstudio.apiregistropendientes.database.enums.LugarPendiente;
-import com.clindevstudio.apiregistropendientes.database.enums.PrioridadPendiente;
-import com.clindevstudio.apiregistropendientes.database.enums.TipoPendiente;
+import com.clindevstudio.apiregistropendientes.database.enums.*;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -19,6 +16,7 @@ public class PendienteResponse {
     private Long idEmpleadoAsignado;
     private String asignadoA;      // nombre del técnico
     private EstadoPendiente estado;
+    private EmpresaPendiente empresa;
     private LugarPendiente lugar;
     private PrioridadPendiente prioridad;
     private TipoPendiente tipo;
