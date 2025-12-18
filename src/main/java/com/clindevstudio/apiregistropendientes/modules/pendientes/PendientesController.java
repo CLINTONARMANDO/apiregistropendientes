@@ -1,6 +1,7 @@
 package com.clindevstudio.apiregistropendientes.modules.pendientes;
 
 import com.clindevstudio.apiregistropendientes.database.enums.EstadoPendiente;
+import com.clindevstudio.apiregistropendientes.database.enums.EstadoTecnico;
 import com.clindevstudio.apiregistropendientes.modules.common.TransactionResponse;
 import com.clindevstudio.apiregistropendientes.modules.common.TransactionResponseFactory;
 import com.clindevstudio.apiregistropendientes.modules.pendientes.dtos.*;
@@ -73,6 +74,17 @@ public class PendientesController {
     ) {
         PendienteResponse actualizado = pendienteService.cambiarEstado(id, nuevoEstado);
         return TransactionResponseFactory.success(actualizado, "Estado actualizado correctamente");
+    }
+
+    @GetMapping("/{id}/estado-tecnico")
+    public TransactionResponse<PendienteResponse> cambiarEstadoTecnico(
+            @PathVariable Long id,
+            @RequestParam EstadoTecnico nuevoEstado
+    ) {
+        return TransactionResponseFactory.success(
+                pendienteService.cambiarEstadoTecnico(id, nuevoEstado),
+                "Instalación de internet actualizada correctamente"
+        );
     }
 
 

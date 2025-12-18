@@ -12,6 +12,7 @@ public class PendienteMapper {
         Pendiente pendiente = new Pendiente();
         pendiente.setFechaPendiente(crearPendienteRequest.getFechaPendiente());
         pendiente.setEstado(crearPendienteRequest.getEstado());
+        pendiente.setEstadoTecnico(crearPendienteRequest.getEstadoTecnico());
         pendiente.setTipo(crearPendienteRequest.getTipo());
         pendiente.setCliente(cliente);
         pendiente.setRegistradoPor(empleadoRegistro);
@@ -29,6 +30,7 @@ public class PendienteMapper {
         Pendiente pendiente = new Pendiente();
         pendiente.setFechaPendiente(crearPendienteRequest.getFechaPendiente());
         pendiente.setEstado(crearPendienteRequest.getEstado());
+        pendiente.setEstadoTecnico(crearPendienteRequest.getEstadoTecnico());
         pendiente.setTipo(crearPendienteRequest.getTipo());
         pendiente.setCliente(cliente);
         pendiente.setRegistradoPor(empleadoRegistro);
@@ -48,6 +50,7 @@ public class PendienteMapper {
         response.setFechaCreacion(pendiente.getFechaCreacion());
         response.setFechaPendiente(pendiente.getFechaPendiente());
         response.setEstado(pendiente.getEstado());
+        response.setEstadoTecnico(pendiente.getEstadoTecnico());
         response.setTipo(pendiente.getTipo());
         response.setLugar(pendiente.getLugar());
         response.setPrioridad(pendiente.getPrioridad());

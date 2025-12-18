@@ -1,9 +1,6 @@
 package com.clindevstudio.apiregistropendientes.modules.pendientes.dtos;
 
-import com.clindevstudio.apiregistropendientes.database.enums.EstadoPendiente;
-import com.clindevstudio.apiregistropendientes.database.enums.LugarPendiente;
-import com.clindevstudio.apiregistropendientes.database.enums.PrioridadPendiente;
-import com.clindevstudio.apiregistropendientes.database.enums.TipoPendiente;
+import com.clindevstudio.apiregistropendientes.database.enums.*;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -16,6 +13,7 @@ public class FiltroPendienteRequest {
     private Long asignadoAId;
     private Long registradoPorId;
     private List<EstadoPendiente> estados;
+    private List<EstadoTecnico> estadosTecnico;
     private LocalDateTime fechaPendiente;
     private TipoPendiente tipo;
     private PrioridadPendiente prioridad;

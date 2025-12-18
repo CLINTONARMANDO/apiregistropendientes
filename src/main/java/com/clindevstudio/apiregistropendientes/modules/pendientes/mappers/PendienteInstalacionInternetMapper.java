@@ -12,6 +12,7 @@ public class PendienteInstalacionInternetMapper {
         return PendienteInstalacionInternet.builder()
                 .pendiente(pendiente)
                 .velocidadSolicitada(request.getVelocidadSolicitada())
+                .costoFijo(request.getCostoFijo())
                 .tipoInstalacion(request.getTipoInstalacion())
                 .build();
     }
@@ -20,6 +21,7 @@ public class PendienteInstalacionInternetMapper {
     public static void updateEntity(PendienteInstalacionInternet entity, PendienteInstalacionInternetRequest request, Pendiente pendiente) {
         entity.setPendiente(pendiente);
         entity.setVelocidadSolicitada(request.getVelocidadSolicitada());
+        entity.setCostoFijo(request.getCostoFijo());
         entity.setTipoInstalacion(request.getTipoInstalacion());
     }
 
@@ -29,6 +31,7 @@ public class PendienteInstalacionInternetMapper {
                 .id(entity.getPendienteId())
                 .pendienteId(entity.getPendiente() != null ? entity.getPendiente().getId() : null)
                 .velocidadSolicitada(entity.getVelocidadSolicitada())
+                .costoFijo(entity.getCostoFijo())
                 .tipoInstalacion(entity.getTipoInstalacion())
                 .ppoe(entity.getPpoe())
                 .vlan(entity.getVlan())

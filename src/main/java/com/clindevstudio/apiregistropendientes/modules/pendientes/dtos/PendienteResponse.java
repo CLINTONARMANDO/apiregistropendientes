@@ -16,6 +16,7 @@ public class PendienteResponse {
     private Long idEmpleadoAsignado;
     private String asignadoA;      // nombre del técnico
     private EstadoPendiente estado;
+    private EstadoTecnico estadoTecnico;
     private EmpresaPendiente empresa;
     private LugarPendiente lugar;
     private PrioridadPendiente prioridad;

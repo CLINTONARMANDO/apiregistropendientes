@@ -43,6 +43,10 @@ public class Pendiente extends BaseEntity{
     @Column(name = "estado", nullable = false)
     private EstadoPendiente estado;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "estado_tecnico")
+    private EstadoTecnico estadoTecnico;
+
     // Lugar
     @Enumerated(EnumType.STRING)
     @Column(name = "lugar", nullable = false)

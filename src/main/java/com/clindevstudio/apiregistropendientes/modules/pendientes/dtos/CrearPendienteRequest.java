@@ -10,6 +10,7 @@ public class CrearPendienteRequest {
     private Long asignadoAId;
     private LocalDateTime fechaPendiente;
     private EstadoPendiente estado;
+    private EstadoTecnico estadoTecnico;
     private EmpresaPendiente empresa;
     private LugarPendiente lugar;
     private PrioridadPendiente prioridad;

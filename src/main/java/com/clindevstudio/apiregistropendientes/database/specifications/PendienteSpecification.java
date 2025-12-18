@@ -41,6 +41,10 @@ public class PendienteSpecification {
                 predicates.add(root.get("estado").in(filtro.getEstados()));
             }
 
+            if (filtro.getEstadosTecnico() != null && !filtro.getEstadosTecnico().isEmpty()) {
+                predicates.add(root.get("estadoTecnico").in(filtro.getEstadosTecnico()));
+            }
+
             if (filtro.getTipo() != null) {
                 predicates.add(cb.equal(root.get("tipo"), filtro.getTipo()));
             }

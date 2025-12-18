@@ -152,6 +152,14 @@ public class PendienteService {
         return PendienteMapper.toResponse(actualizado);
     }
 
+    public PendienteResponse cambiarEstadoTecnico(Long pendienteId, EstadoTecnico estadoTecnico) {
+        Pendiente entity = pendienteRepository.findById(pendienteId)
+                .orElseThrow(() -> new EntityNotFoundException("Instalación de internet no encontrada con pendienteId: " + pendienteId));
+        entity.setEstadoTecnico(estadoTecnico);
+        return PendienteMapper.toResponse(pendienteRepository.save(entity));
+
+    }
+
 
 
     @Transactional
