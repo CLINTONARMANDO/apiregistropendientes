@@ -6,8 +6,6 @@ public enum EstadoPendiente {
     EN_PROGRESO,
     PAUSADO,
     REVISION,
-    SIN_PPOE,
-    SIN_VLAN,
     POR_VALIDAR,
     OBSERVADO,
     FINALIZADO,

@@ -94,31 +94,6 @@ public class PendienteService {
 
         switch (nuevoEstado) {
 
-            case SIN_PPOE -> {
-                notificacionService.enviarNotificacionPorPermiso(
-                        Permiso.ASIGNAR_PPOE,
-                        new NotificacionRequest(
-                                "Pendiente requiere PPOE",
-                                "El pendiente #" + pendiente.getId() + " requiere asignación de usuario PPOE.",
-                                NotificationTipo.WARNING,
-                                NotificationEstado.NO_LEIDO,
-                                0L
-                        )
-                );
-            }
-
-            case SIN_VLAN -> {
-                notificacionService.enviarNotificacionPorPermiso(
-                        Permiso.ASIGNAR_VLAN,
-                        new NotificacionRequest(
-                                "Pendiente requiere VLAN",
-                                "El pendiente #" + pendiente.getId() + " necesita asignación de VLAN.",
-                                NotificationTipo.WARNING,
-                                NotificationEstado.NO_LEIDO,
-                                0L
-                        )
-                );
-            }
 
             case POR_VALIDAR -> {
                 notificacionService.enviarNotificacionPorPermiso(
