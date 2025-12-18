@@ -4,8 +4,6 @@ import com.clindevstudio.apiregistropendientes.database.entities.*;
 import com.clindevstudio.apiregistropendientes.database.enums.*;
 import com.clindevstudio.apiregistropendientes.database.repositories.*;
 import com.clindevstudio.apiregistropendientes.database.specifications.PendienteSpecification;
-import com.clindevstudio.apiregistropendientes.modules.notificaciones.NotificacionService;
-import com.clindevstudio.apiregistropendientes.modules.notificaciones.dtos.NotificacionRequest;
 import com.clindevstudio.apiregistropendientes.modules.pendientes.dtos.*;
 import com.clindevstudio.apiregistropendientes.modules.pendientes.mappers.*;
 import jakarta.persistence.EntityNotFoundException;
@@ -32,7 +30,6 @@ public class PendienteService {
     private final PendienteAveriaRepsitory pendienteAveriaRepsitory;
     private final PendienteRecojoDispositivoRepository pendienteRecojoDispositivoRepository;
     private final UsuarioRepository usuarioRepository;
-    private final NotificacionService notificacionService;
 
 
     // ✅ Constructor injection (sin @Autowired en campos)
@@ -46,8 +43,7 @@ public class PendienteService {
             PendienteInstalacionInternetRepository pendienteInstalacionInternetRepository,
             PendienteAveriaRepsitory pendienteAveriaRepsitory,
             PendienteRecojoDispositivoRepository pendienteRecojoDispositivoRepository,
-            UsuarioRepository usuarioRepository,
-            NotificacionService notificacionService
+            UsuarioRepository usuarioRepository
     ) {
         this.pendienteRepository = pendienteRepository;
         this.clienteRepository = clienteRepository;
@@ -59,7 +55,6 @@ public class PendienteService {
         this.pendienteAveriaRepsitory = pendienteAveriaRepsitory;
         this.pendienteRecojoDispositivoRepository = pendienteRecojoDispositivoRepository;
         this.usuarioRepository = usuarioRepository;
-        this.notificacionService = notificacionService;
     }
 
     public Page<PendienteResponse> filtrarPendientes(FiltroPendienteRequest filtro, Pageable pageable) {
@@ -91,38 +86,6 @@ public class PendienteService {
 
         pendiente.setEstado(nuevoEstado);
         Pendiente actualizado = pendienteRepository.save(pendiente);
-
-        switch (nuevoEstado) {
-
-
-            case POR_VALIDAR -> {
-                notificacionService.enviarNotificacionPorPermiso(
-                        Permiso.REVISAR_GASTOS,
-                        new NotificacionRequest(
-                                "Pendiente por validar",
-                                "El pendiente #" + pendiente.getId() + " está listo para revisión y validación.",
-                                NotificationTipo.INFO,
-                                NotificationEstado.NO_LEIDO,
-                                0L
-                        )
-                );
-            }
-
-            case ASIGNADO -> {
-                notificacionService.enviarNotificacionPorPermiso(
-                        Permiso.ASIGNAR_TECNICO,
-                        new NotificacionRequest(
-                                "Nuevo pendiente asignado",
-                                "Se ha asignado el pendiente #" + pendiente.getId(),
-                                NotificationTipo.INFO,
-                                NotificationEstado.NO_LEIDO,
-                                0L
-                        )
-                );
-            }
-
-            default -> {}
-        }
 
         return PendienteMapper.toResponse(actualizado);
     }
