@@ -24,4 +24,6 @@ public class PendienteResponse {
     private String direccion;
     private Long idCliente;
     private String cliente;        // nombre o razón social del cliente
+    private String codCliente;
+    private String celularCliente;
 }
