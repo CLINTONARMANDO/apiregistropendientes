@@ -58,7 +58,7 @@ public class PendienteMapper {
         response.setCliente(pendiente.getCliente().getNombre());
         response.setIdCliente(pendiente.getCliente().getId());
         response.setCodCliente(pendiente.getCliente().getCodigoCliente());
-        response.setCelularCliente(pendiente.getCliente().getCodigoCliente());
+        response.setCelularCliente(pendiente.getCliente().getTelefono());
 
         response.setRegistradoPor(
                 pendiente.getRegistradoPor().getNombre() + " " + pendiente.getRegistradoPor().getApellidoPaterno()
