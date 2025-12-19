@@ -34,4 +34,13 @@ public class PendienteTraslado extends BaseEntity {
     @Enumerated(EnumType.STRING)
     @Column(name = "tipo_servicio", length = 50)
     private TipoServicio tipoServicio;
+
+    @Column(name = "vlan", length = 50)
+    private String vlan;
+
+    @Column(name = "ppoe", length = 50)
+    private String ppoe;
+
+    @Column(name = "ppoe_password", length = 50)
+    private String ppoePassword;
 }

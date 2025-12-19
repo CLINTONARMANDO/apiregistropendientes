@@ -7,4 +7,7 @@ public class PendienteAveriaResponse {
     private Long id;
     private Long pendienteId;
     private String descripcionFalla;
+    private String vlan;
+    private String ppoe;
+    private String ppoePassword;
 }

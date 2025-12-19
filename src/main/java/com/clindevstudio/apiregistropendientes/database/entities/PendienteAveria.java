@@ -25,4 +25,13 @@ public class PendienteAveria extends BaseEntity {
 
     @Column(name = "descripcion_falla", columnDefinition = "TEXT")
     private String descripcionFalla;
+
+    @Column(name = "vlan", length = 50)
+    private String vlan;
+
+    @Column(name = "ppoe", length = 50)
+    private String ppoe;
+
+    @Column(name = "ppoe_password", length = 50)
+    private String ppoePassword;
 }

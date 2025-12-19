@@ -11,4 +11,7 @@ public class PendienteTrasladoResponse {
     private LugarPendiente lugarDestino;
     private String direccionDestino;
     private TipoServicio tipoServicio;
+    private String vlan;
+    private String ppoe;
+    private String ppoePassword;
 }

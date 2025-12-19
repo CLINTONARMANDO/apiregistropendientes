@@ -120,35 +120,6 @@ public class PendientesController {
         );
     }
 
-    @PutMapping("/{pendienteId}/instalacion-internet/ppoe")
-    public TransactionResponse<PendienteInstalacionInternetResponse> asignarPpoe(
-            @PathVariable Long pendienteId,
-            @RequestParam String ppoeUser,
-            @RequestParam String ppoePassword
-    ) {
-        PendienteInstalacionInternetResponse response =
-                pendienteService.asignarPpoe(pendienteId, ppoeUser, ppoePassword);
-
-        return TransactionResponseFactory.success(
-                response,
-                "PPPoE asignado correctamente"
-        );
-    }
-
-    @PutMapping("/{pendienteId}/instalacion-internet/vlan")
-    public TransactionResponse<PendienteInstalacionInternetResponse> asignarVlan(
-            @PathVariable Long pendienteId,
-            @RequestParam String vlan
-    ) {
-        PendienteInstalacionInternetResponse response =
-                pendienteService.asignarVlan(pendienteId, vlan);
-
-        return TransactionResponseFactory.success(
-                response,
-                "VLAN asignada correctamente"
-        );
-    }
-
 
     // ==========================================================
     // 🔹 PENDIENTE TRASLADO
@@ -175,6 +146,35 @@ public class PendientesController {
         return TransactionResponseFactory.success(
                 pendienteService.updatePendienteTraslado(request),
                 "Traslado actualizado correctamente"
+        );
+    }
+
+    @PutMapping("/{pendienteId}/traslado/ppoe")
+    public TransactionResponse<PendienteTrasladoResponse> asignarPpoeTraslado(
+            @PathVariable Long pendienteId,
+            @RequestParam String ppoeUser,
+            @RequestParam String ppoePassword
+    ) {
+        PendienteTrasladoResponse response =
+                pendienteService.asignarPpoeTraslado(pendienteId, ppoeUser, ppoePassword);
+
+        return TransactionResponseFactory.success(
+                response,
+                "PPPoE asignado correctamente"
+        );
+    }
+
+    @PutMapping("/{pendienteId}/traslado¿/vlan")
+    public TransactionResponse<PendienteTrasladoResponse> asignarVlanTraslado(
+            @PathVariable Long pendienteId,
+            @RequestParam String vlan
+    ) {
+        PendienteTrasladoResponse response =
+                pendienteService.asignarVlanTraslado(pendienteId, vlan);
+
+        return TransactionResponseFactory.success(
+                response,
+                "VLAN asignada correctamente"
         );
     }
 
@@ -234,6 +234,35 @@ public class PendientesController {
         );
     }
 
+    @PutMapping("/{pendienteId}/instalacion-internet/ppoe")
+    public TransactionResponse<PendienteInstalacionInternetResponse> asignarPpoeInstalacionInternet(
+            @PathVariable Long pendienteId,
+            @RequestParam String ppoeUser,
+            @RequestParam String ppoePassword
+    ) {
+        PendienteInstalacionInternetResponse response =
+                pendienteService.asignarPpoeInstalacionInternet(pendienteId, ppoeUser, ppoePassword);
+
+        return TransactionResponseFactory.success(
+                response,
+                "PPPoE asignado correctamente"
+        );
+    }
+
+    @PutMapping("/{pendienteId}/instalacion-internet/vlan")
+    public TransactionResponse<PendienteInstalacionInternetResponse> asignarVlanInstalacionInternet(
+            @PathVariable Long pendienteId,
+            @RequestParam String vlan
+    ) {
+        PendienteInstalacionInternetResponse response =
+                pendienteService.asignarVlanInstalacionInternet(pendienteId, vlan);
+
+        return TransactionResponseFactory.success(
+                response,
+                "VLAN asignada correctamente"
+        );
+    }
+
     // ==========================================================
     // 🔹 PENDIENTE AVERÍA
     // ==========================================================
@@ -259,6 +288,35 @@ public class PendientesController {
         return TransactionResponseFactory.success(
                 pendienteService.updatePendienteAveria(request),
                 "Avería actualizada correctamente"
+        );
+    }
+
+    @PutMapping("/{pendienteId}/averia/ppoe")
+    public TransactionResponse<PendienteAveriaResponse> asignarPpoe(
+            @PathVariable Long pendienteId,
+            @RequestParam String ppoeUser,
+            @RequestParam String ppoePassword
+    ) {
+        PendienteAveriaResponse response =
+                pendienteService.asignarPpoeAveria(pendienteId, ppoeUser, ppoePassword);
+
+        return TransactionResponseFactory.success(
+                response,
+                "PPPoE asignado correctamente"
+        );
+    }
+
+    @PutMapping("/{pendienteId}/averia¿/vlan")
+    public TransactionResponse<PendienteAveriaResponse> asignarVlan(
+            @PathVariable Long pendienteId,
+            @RequestParam String vlan
+    ) {
+        PendienteAveriaResponse response =
+                pendienteService.asignarVlanAveria(pendienteId, vlan);
+
+        return TransactionResponseFactory.success(
+                response,
+                "VLAN asignada correctamente"
         );
     }
 
