@@ -39,6 +39,9 @@ public class PendienteTrasladoMapper {
                 .direccionDestino(entity.getDireccionDestino())
                 .tipoServicio(entity.getTipoServicio())
                 .lugarDestino(entity.getLugarDestino())
+                .ppoe(entity.getPpoe())
+                .ppoePassword(entity.getPpoePassword())
+                .vlan(entity.getVlan())
                 .build();
     }
 }
