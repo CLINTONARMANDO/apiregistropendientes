@@ -3,6 +3,7 @@ package com.clindevstudio.apiregistropendientes.modules.usuarios;
 import com.clindevstudio.apiregistropendientes.database.entities.*;
 import com.clindevstudio.apiregistropendientes.database.repositories.*;
 import com.clindevstudio.apiregistropendientes.modules.auth.utils.JwtUtil;
+import com.clindevstudio.apiregistropendientes.modules.empleados.mappers.EmpleadoMapper;
 import com.clindevstudio.apiregistropendientes.modules.usuarios.dtos.*;
 import com.clindevstudio.apiregistropendientes.modules.usuarios.mappers.ModuloMapper;
 import com.clindevstudio.apiregistropendientes.modules.usuarios.mappers.RolMapper;
@@ -37,6 +38,8 @@ public class UsuarioService {
     private JwtUtil jwtUtil;
 
     private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+    @Autowired
+    private EmpleadoRepository empleadoRepository;
 
     // Obtener todos los usuarios
     public List<UsuarioResponse> getUsuarios() {
@@ -63,7 +66,10 @@ public class UsuarioService {
         Rol rol = rolRepository.findById(usuarioRequest.getIdRol())
                 .orElseThrow(() -> new EntityNotFoundException("Rol no encontrado"));
 
-        Usuario usuario = UsuarioMapper.toEntity(usuarioRequest, rol);
+        Empleado empleado = empleadoRepository.findById(usuarioRequest.getEmpleadoId())
+                .orElseThrow(() -> new EntityNotFoundException("Empleado no encontrado"));
+
+        Usuario usuario = UsuarioMapper.toEntity(usuarioRequest, rol,empleado);
         usuario.setPassword(passwordEncoder.encode(usuarioRequest.getPassword()));
 
         return UsuarioMapper.toResponse(usuarioRepository.save(usuario));
@@ -97,6 +103,10 @@ public class UsuarioService {
         Rol rol = rolRepository.findById(usuarioRequest.getIdRol())
                 .orElseThrow(() -> new EntityNotFoundException("Rol no encontrado"));
         usuario.setRol(rol);
+
+        Empleado empleado = empleadoRepository.findById(usuarioRequest.getEmpleadoId())
+                .orElseThrow(() -> new EntityNotFoundException("Empleado no encontrado"));
+        usuario.setEmpleado(empleado);
 
         if (usuarioRequest.getPassword() != null && !usuarioRequest.getPassword().isEmpty()) {
             usuario.setPassword(passwordEncoder.encode(usuarioRequest.getPassword()));

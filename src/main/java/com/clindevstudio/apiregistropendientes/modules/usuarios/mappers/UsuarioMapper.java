@@ -1,5 +1,6 @@
 package com.clindevstudio.apiregistropendientes.modules.usuarios.mappers;
 
+import com.clindevstudio.apiregistropendientes.database.entities.Empleado;
 import com.clindevstudio.apiregistropendientes.database.entities.Rol;
 import com.clindevstudio.apiregistropendientes.database.entities.Usuario;
 import com.clindevstudio.apiregistropendientes.database.repositories.RolRepository;
@@ -32,7 +33,7 @@ public class UsuarioMapper {
         return usuarioResponse;
     }
 
-    public static Usuario toEntity(UsuarioRequest usuarioRequest, Rol rol) {
+    public static Usuario toEntity(UsuarioRequest usuarioRequest, Rol rol, Empleado empleado) {
         Usuario usuario = new Usuario();
         usuario.setNombre(usuarioRequest.getNombre());
         usuario.setDni(usuarioRequest.getDni());
@@ -40,6 +41,7 @@ public class UsuarioMapper {
         usuario.setVigente(usuarioRequest.getActivo());
         usuario.setRol(rol);
         usuario.setPassword(usuarioRequest.getPassword());
+        usuario.setEmpleado(empleado);
         return usuario;
     }
 }
